@@ -1,0 +1,22 @@
+{% extends "main_template.html" %}
+
+{% block body %}
+    <div class="container-fluid centered">
+        <ul class="nav navbar-nav">
+            <li> <a href="{{ url_for("student_details") }}"> STUDENT DETAILS  </a> </li>
+            <li> <a href="{{ url_for("timetable") }}"> TIMETABLE </a> </li>
+            <li> <a href="{{ url_for("accommodation") }}"> ACCOMMODATION </a> </li>
+            <li> <a href="{{ url_for("cats_and_exams") }}"> UPCOMING CATS AND EXAMS </a> </li>
+            <li> <a href="{{ url_for("results") }}"> VIEW RESULTS </a> </li>
+            <li> <a href="{{ url_for("notes") }}"> NOTES </a> </li>
+            <li> <a href="{{ url_for("fees") }}"> FEE BALANCE </a> </li>
+        </ul>
+
+    </div>
+
+    <div class="container-fluid">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+{% endblock %}

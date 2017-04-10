@@ -1,0 +1,39 @@
+{% extends "account_template.html" %}
+
+{% block title %}
+    RESULTS
+{% endblock %}
+
+{% block content %}
+    {% if results %}
+        {% for year in results %}
+            <table>
+                <tr>
+                    <th> Unit </th>
+                    <th> Grade </th>
+                </tr>
+
+                {% for unit in year %}
+                    <tr>
+                        <td> unit.name </td>
+                        <td> unit.grade </td>
+                    </tr>
+
+                {%  endfor %}
+
+            </table>
+
+            <hr class="divider">
+        {% endfor %}
+
+    {% else %}
+        {% if results %}
+
+
+        {% else %}
+            <h4 class="alert alert-info text-center text-uppercase"> You do not have any results yet!! </h4>
+
+        {% endif %}
+
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "main_template.html" %}
+
+{% block title %}
+    PAGE NOT FOUND
+{% endblock %}
+
+{% block body %}
+    <h3> The 400 Bad Request: The browser (or proxy) sent a request that this server could not understand. </h3>
+    <h4> {{ error }} </h4>
+
+    <a href="/"> Go Home </a>
+
+{% endblock %}

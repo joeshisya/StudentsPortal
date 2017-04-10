@@ -1,0 +1,62 @@
+{% extends "account_template.html" %}
+
+{% block title %}
+    ACCOMMODATION
+{% endblock %}
+
+{% block content %}
+    {% if cant_book %}
+        <div class="text-center text-info text-uppercase">
+            <p> YOUR ACCOMMODATION DETAILS.</p>
+
+            <hr class="divider">
+
+            <p> Hostel: {{ session['student_details']['hostel'] }} </p>
+            <p> Room Number: [TO DO] </p>
+        </div>
+
+    {% else %}
+
+        {% if hostels %}
+            <h4 class="text-center blue"> Book A Room </h4>
+
+            <form method="post" action="">
+
+                <div>
+                    <p class="text-info">
+                        There seems to be some rooms that are available. If you are interested in booking a room within the
+                        school grounds, please submit the form below. If you are not interested in receiving a room in a
+                        specific hostel select the option 'ANY CAN DO'
+                        and submit.
+                    </p>
+                </div>
+
+                <div>
+                    <p class="text-info">
+                        After being allocated a  room, you will be expected to pay the expected accommodation fees, failure of
+                        which your room will be given to another student.
+                    </p>
+                </div>
+
+                <form>
+                    <p class="form-label"> Preferred Hostel: </span> </p>
+                    <select title="preferred_hostel" name="preferred_hostel" class="form-control">
+                        <option selected> ANY CAN DO </option>
+
+                        {% for hostel in hostels %}
+                            <option value="{{ hostel['hostel_name'] }}"> {{ hostel['hostel_name'] }} - Available Beds : {{ hostel['available_spaces'] }}</option>
+                        {% endfor %}
+                    </select> <br> <br>
+
+
+                    <input type="submit" value="BOOK" class="btn btn-info">
+                </form>
+            </form>
+
+
+        {% else %}
+            <div class="alert alert-warning"> THERE ARE NO HOSTELS AVAILABLE!</div>
+        {% endif %}
+
+    {% endif %}
+{% endblock %}

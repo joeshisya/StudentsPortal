@@ -1,0 +1,37 @@
+{% extends "account_template.html" %}
+
+{% block title %}
+    NOTES
+{% endblock %}
+
+{% block content %}
+    {% if files %}
+        <table class="table">
+            <tr>
+                <th> File </th>
+                <th> Course </th>
+                <th> Unit </th>
+                <th> Year </th>
+                <th> Semester </th>
+                <th> Download </th>
+            </tr>
+
+            {% for file in files %}
+                <tr>
+                    <td> {{ file['name'] }} </td>
+                    <td> {{ file['course'] }} </td>
+                    <td> {{ file['unit'] }} </td>
+                    <td> {{ file['year'] }} </td>
+                    <td> {{ file['semester'] }} </td>
+                    <td>
+                        <a href="/student/dashboard/notes{{ file['location'] }}" target="_blank"> <span class="glyphicon glyphicon-download"></span> </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+
+    {% else %}
+        <div class="alert alert-info text-center text-uppercase"> There are no documents available yet!! </div>
+
+    {% endif %}
+{% endblock %}

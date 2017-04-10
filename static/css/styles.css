@@ -1,0 +1,45 @@
+html
+{
+    height: 100%;
+}
+
+p
+{
+    margin-bottom: 15px;
+}
+
+.main_div
+{
+    padding-left: 40px;
+    padding-right: 40px;
+    background-image: linear-gradient(white, #d3edef, #bbd7d7);
+    padding-bottom: 45px;
+    min-height: 600px;
+}
+
+.form-label
+{
+    display: inline-block;
+    color: #2c83e9;
+    text-transform: uppercase;
+}
+
+.table-label
+{
+    color: #2c83e9;
+    text-transform: uppercase;
+}
+
+.blue
+{
+    color: #2c83e9;
+}
+
+.profile-image
+{
+    height: 300px;
+    width: 300px;
+    padding: 15px;
+    margin: 15px 0 15px 0;
+    display: flex;
+}

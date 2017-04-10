@@ -1,0 +1,114 @@
+{% extends "main_template.html" %}
+
+{% block title %}
+    CREATE ACCOUNT
+{% endblock %}
+
+{% block body %}
+    <div>
+        <br>
+
+        <div class="center-block" style="width:50%;">
+
+            <h1 class="text-center"> ADD NEW STUDENT </h1>
+
+            <hr>
+
+            <form method="post" action="">
+                <p class="form-label"> Registration Number <span class="glyphicon glyphicon-asterisk"></span> </p>
+                <input type="text" name="registration_number" value="{{ request.form.get['registration_number'] }}"
+                       placeholder="Registration Number" class="form-control">
+                <br>
+
+                <p class="form-label"> First Name: <span class="glyphicon glyphicon-asterisk"></span> </p>
+                <input type="text" name="first_name" value="{{ request.form.get['first_name'] }}"
+                       placeholder="First Name" class="form-control"> <br>
+
+                <p class="form-label"> Last Name: <span class="glyphicon glyphicon-asterisk"></span> </p>
+                <input type="text" name="last_name" value="{{ request.form.get['last_name'] }}"
+                       placeholder="Last Name" class="form-control"> <br>
+
+                <p class="form-label"> Other Names: </p>
+                <input type="text" name="other_names" value="{{ request.form.get[''] }}"
+                       placeholder="Other Names" class="form-control"> <br>
+
+                <p class="form-label"> Mode of Admission <span class="glyphicon glyphicon-asterisk"></span> </p>
+                <select name="mode_of_admission" title="mode_of_admission" class="form-control">
+                    <option selected disabled> MODE OF ADMISSION </option>
+                    <option value="Government Sponsored"> Government Sponsored </option>
+                    <option value="Self Sponsored"> Self Sponsored </option>
+                    <option value="School Based"> School Based </option>
+                </select> <br>
+
+                <p class="form-label"> Faculty <span class="glyphicon glyphicon-asterisk"></span> </p>
+                <select name="faculty" title="faculty" class="form-control">
+                    <option selected disabled> FACULTY </option>
+                    <option value="Diploma"> Information Science and Technology </option>
+                </select> <br>
+
+                <p class="form-label"> Level: <span class="glyphicon glyphicon-asterisk"></span> </p>
+                <select name="level" title="level" class="form-control">
+                    <option selected disabled> LEVEL </option>
+                    <option value="Diploma"> Diploma </option>
+                    <option value="Degree"> Degree </option>
+                    <option value="Higher Diploma"> Higher Diploma </option>
+                    <option value="Masters"> Masters </option>
+                    <option value="PhD"> PhD </option>
+                </select> <br>
+
+                <p class="form-label"> Course: <span class="glyphicon glyphicon-asterisk"></span> </p>
+                <select name="course" title="course" class="form-control">
+                    <option selected disabled> COURSE </option>
+                    <option value="Computer Science"> Computer Science </option>
+                    <option value="Education"> Education </option>
+                    <option value="Actuarial Science"> Actuarial Science </option>
+                    <option value="Agriculture"> Agriculture </option>
+                    <option value="Food Science"> Food Science </option>
+
+                    {% for course in courses %}
+                        <option value="{{ course.name }}"> {{ course.name }} </option>
+                    {% endfor %}
+                </select> <br>
+
+                <p class="form-label"> Email: </p>
+                <input type="email" name="email" value="{{ request.form.get['email'] }}"
+                       placeholder="Email" class="form-control"> <br>
+
+                <p class="form-label"> Phone Number: </p>
+                <input type="text" name="phone_number" value="{{ request.form.get['phone_number'] }}"
+                       placeholder="Phone" class="form-control"> <br>
+
+                <p class="form-label"> Gender: <span class="glyphicon glyphicon-asterisk"></span> </p>
+                <select name="gender" title="gender" class="form-control">
+                    <option selected disabled> GENDER </option>
+                    <option value="Female"> Female </option>
+                    <option value="Male"> Male </option>
+                    <option value="Trans"> Transgendered </option>
+                </select> <br>
+
+                <p class="form-label"> Date of Birth: <span class="glyphicon glyphicon-asterisk"></span> </p>
+                <input type="datetime-local" name="dob" value="{{ request.form.get['dob'] }}"
+                       placeholder="Date of Birth" class="form-control"> <br>
+
+                <p class="form-label"> Any Disabilities?: <span class="glyphicon glyphicon-asterisk"> </span> </p>
+                <select title="disabled" name="disabled" class="form-control">
+                    <option selected disabled> ANY DISABILITIES? </option>
+                    <option value="yes"> Yes </option>
+                    <option value="no"> No </option>
+                </select> <br> <br>
+
+                <p class="form-label"><span class="glyphicon glyphicon-asterisk"></span> THIS FIELDS ARE MANDATORY! </p> <br>
+
+                <p><input type="submit" value="Register" class="form-control btn btn-info"></p> <br>
+
+                <p><input type="reset" value="Reset" class="form-control btn btn-info"></p>
+
+                {% if error %}
+                    <p class="alert alert-danger"> {{ error }}</p>
+
+                {% endif %}
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

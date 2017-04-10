@@ -1,0 +1,14 @@
+{% extends "main_template.html" %}
+
+{% block title %}
+    INTERNAL SERVER ERROR
+{% endblock %}
+
+{% block body %}
+    <div>
+        <h3> ERROR: {{ error }}</h3>
+
+        <a href="/"> Go Home </a>
+
+    </div>
+{% endblock %}

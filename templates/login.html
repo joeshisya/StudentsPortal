@@ -1,0 +1,41 @@
+{% extends "main_template.html" %}
+
+{% block title %}
+    LOGIN
+{% endblock %}
+
+{% block body %}
+    <div>
+        <br>
+
+        <div class="center-block" style="width:50%;">
+            <h1 class="text-center"> LOGIN TO PORTAL </h1>
+
+            <hr>
+
+            <form method="post" action="">
+                Registration Number:
+                <input type="text" name="reg_no" placeholder="Registration Number" maxlength="15" class="form-control"> <br>
+
+                Password:
+                <input type="password" name="password" placeholder="Password" maxlength="25" class="form-control"> <br>
+
+                Remember Password:
+                <input type="checkbox" name="remember" id="remember" title="Remember Password"> <br> <br>
+
+                <input type="submit" value="Login" class="align-right form-control">
+            </form>
+
+            <div>
+                <br>
+                <p class="text-center">Forgot your password? <a href="{{ url_for("reset_password") }}">Click here to reset it</a>.</p>
+            </div>
+
+            {% if error %}
+                <div class="alert alert-danger"> {{ error }} </div>
+            {% endif %}
+
+        </div>
+    </div>
+
+{% endblock %}
