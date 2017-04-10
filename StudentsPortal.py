@@ -349,7 +349,7 @@ def add_student():
                 request.form.get('last_name') and request.form.get('mode_of_admission') and
                 request.form.get('level') and request.form.get('course') and request.form.get('email') and
                 request.form.get('gender') and request.form.get('dob') and request.form.get('disabled') and
-                request.form.get('faculty')):
+                request.form.get('faculty') and request.form.get('year') and request.form.get('semester')):
             return render_template("add_student.html", error="PLEASE FILL IN ALL MANDATORY FIELDS!")
 
         try:

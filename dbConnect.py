@@ -49,8 +49,8 @@ def add_account(details, c, conn):
                 details.get('registration_number'), details.get('first_name'), details.get('last_name'),
                 details.get('other_names'), details.get('mode_of_admission'), details.get('level'),
                 details.get('faculty'), details.get('course'), details.get('email'), details.get('phone_number'),
-                details.get('gender'), details.get('dob'), datetime.datetime.now(), 1, 1,
-                1)
+                details.get('gender'), details.get('dob'), datetime.datetime.now(), details.get('year'),
+                details.get('semester'), 1)
 
     c.execute(query)
     conn.commit()
