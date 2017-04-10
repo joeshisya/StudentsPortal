@@ -70,6 +70,26 @@
                     {% endfor %}
                 </select> <br>
 
+                <p class="form-label"> Year: <span class="glyphicon glyphicon-asterisk"></span> </p>
+                <select name="year" title="year" class="form-control">
+                    <option selected disabled> YEAR </option>
+                    <option value=1> 1 </option>
+                    <option value=2> 2 </option>
+                    <option value=3> 3 </option>
+                    <option value=4> 4 </option>
+                    <option value=5> 5 </option>
+                    <option value=6> 6 </option>
+                    <option value=7> 7 </option>
+                </select> <br>
+
+                <p class="form-label"> Semester: <span class="glyphicon glyphicon-asterisk"></span> </p>
+                <select name="semester" title="semester" class="form-control">
+                    <option selected disabled> YEAR </option>
+                    <option value=1> 1 </option>
+                    <option value=2> 2 </option>
+                    <option value=3> 3 </option>
+                </select> <br>
+
                 <p class="form-label"> Email: </p>
                 <input type="email" name="email" value="{{ request.form.get['email'] }}"
                        placeholder="Email" class="form-control"> <br>

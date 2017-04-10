@@ -350,20 +350,20 @@ def add_student():
                 request.form.get('level') and request.form.get('course') and request.form.get('email') and
                 request.form.get('gender') and request.form.get('dob') and request.form.get('disabled') and
                 request.form.get('faculty') and request.form.get('year') and request.form.get('semester')):
-            return render_template("add_student.html", error="PLEASE FILL IN ALL MANDATORY FIELDS!")
+            return render_template("admin/add_student.html", error="PLEASE FILL IN ALL MANDATORY FIELDS!")
 
         try:
             c, conn = dbConnect.connection("students")
             dbConnect.add_account(request.form, c, conn)
 
             flash("New Student Successfully Added")
-            return render_template("add_student.html")
+            return render_template("admin/add_student.html")
 
         except Exception as e:
             e = str(e)
-            return render_template("add_student.html", error=e)
+            return render_template("admin/add_student.html", error=e)
 
-    return render_template("add_student.html")
+    return render_template("admin/add_student.html")
 
 # Admin Code End
 
