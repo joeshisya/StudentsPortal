@@ -213,8 +213,9 @@ def reset_password(reset_code=None):
 @app.route('/student/dashboard/')
 @login_required
 def dashboard():
-    c, conn = dbConnect.connection("students")
-    session['student_details'] = dbConnect.get_student_details(session['registration_number'], c, conn)
+    if not 'student_details' in session:
+        c, conn = dbConnect.connection("students")
+        session['student_details'] = dbConnect.get_student_details(session['registration_number'], c, conn)
 
     return render_template("dashboard.html")
 
