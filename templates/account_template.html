@@ -6,12 +6,16 @@
             <!-- sidebar -->
             <div class="column col-sm-3 col-xs-1 sidebar-offcanvas" id="sidebar">
                 {% if session['student_details']['gender'] == "Female" %}
-                    <img src="{{ url_for('static', filename='images/female_user.png') }}"
+                    <a href="{{ url_for("dashboard") }}">
+                        <img src="{{ url_for('static', filename='images/female_user.png') }}"
                          class="img-circle center-block profile-image">
+                    </a>
 
                 {% else %}
-                    <img src="{{ url_for('static', filename='images/female_user.jpg') }}"
+                    <a href="{{ url_for("dashboard") }}">
+                        <img src="{{ url_for('static', filename='images/male_user.jpg') }}"
                          class="img-circle center-block profile-image">
+                    </a>
 
                 {% endif %}
 
