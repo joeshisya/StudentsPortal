@@ -7,35 +7,48 @@
 {% block content %}
     {% if scores %}
         {% for year in scores %}
-            {%  if year %}
-                <h4 class="text-center text-info"> YEAR {{ year[0]['score_year'] }} </h4>
+            {% if year %}
+                <div class="year-display">
 
-                <table class="table">
-                    <tr>
-                        <th> Unit </th>
-                        <th> Assignment </th>
-                        <th> Cat 1 </th>
-                        <th> Cat 2 </th>
-                        <th> Exam </th>
-                        <th> Total </th>
-                        <th> Grade </th>
-                    </tr>
+                    <a id="display{{ year[0]['score_year'] }}"
+                       href="javascript:toggle('{{ year[0]['score_year'] }}', 'display{{ year[0]['score_year'] }}');">
 
-                    {% for unit in year %}
-                        <tr>
-                            <td> {{ unit['unit'] }} </td>
-                            <td> {{ unit['assignment'] }} </td>
-                            <td> {{ unit['cat1'] }} </td>
-                            <td> {{ unit['cat2'] }} </td>
-                            <td> {{ unit['exam'] }} </td>
-                            <td> {{ unit['total'] }} </td>
-                            <td> {{ unit['grade'] }} </td>
-                        </tr>
-                    {% endfor %}
+                        <button type="button" class="btn btn-info form-control" data-toggle="collapse"
+                            data-target="#{{ year[0]['score_year'] }}">
 
-                </table>
+                         YEAR {{ year[0]['score_year'] }}
+                    </button>
+                    </a>
 
-                <hr class="divider">
+                    <div id="{{ year[0]['score_year'] }}"  style="display: none" class="collapse">
+                        <table class="table">
+                            <tr>
+                                <th> Unit </th>
+                                <th> Assignment </th>
+                                <th> Cat 1 </th>
+                                <th> Cat 2 </th>
+                                <th> Exam </th>
+                                <th> Total </th>
+                                <th> Grade </th>
+                            </tr>
+
+                            {% for unit in year %}
+                                <tr>
+                                    <td> {{ unit['unit'] }} </td>
+                                    <td> {{ unit['assignment'] }} </td>
+                                    <td> {{ unit['cat1'] }} </td>
+                                    <td> {{ unit['cat2'] }} </td>
+                                    <td> {{ unit['exam'] }} </td>
+                                    <td> {{ unit['total'] }} </td>
+                                    <td> {{ unit['grade'] }} </td>
+                                </tr>
+                            {% endfor %}
+
+                        </table>
+
+                    </div>
+
+                </div>
             {%  endif %}
 
         {% endfor %}
