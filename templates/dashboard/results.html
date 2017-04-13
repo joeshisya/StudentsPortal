@@ -5,35 +5,42 @@
 {% endblock %}
 
 {% block content %}
-    {% if results %}
-        {% for year in results %}
-            <table>
-                <tr>
-                    <th> Unit </th>
-                    <th> Grade </th>
-                </tr>
+    {% if scores %}
+        {% for year in scores %}
+            {%  if year %}
+                <h4 class="text-center text-info"> YEAR {{ year[0]['score_year'] }} </h4>
 
-                {% for unit in year %}
+                <table class="table">
                     <tr>
-                        <td> unit.name </td>
-                        <td> unit.grade </td>
+                        <th> Unit </th>
+                        <th> Assignment </th>
+                        <th> Cat 1 </th>
+                        <th> Cat 2 </th>
+                        <th> Exam </th>
+                        <th> Total </th>
+                        <th> Grade </th>
                     </tr>
 
-                {%  endfor %}
+                    {% for unit in year %}
+                        <tr>
+                            <td> {{  unit['unit'] }} </td>
+                            <td> {{ unit['assignment'] }} </td>
+                            <td> {{ unit['cat1'] }} </td>
+                            <td> {{ unit['cat2'] }} </td>
+                            <td> {{ unit['exam'] }} </td>
+                            <td> {{ unit['total'] }} </td>
+                            <td> {{ unit['grade'] }} </td>
+                        </tr>
+                    {% endfor %}
 
-            </table>
-
-            <hr class="divider">
+                </table>
+            {%  endif %}
         {% endfor %}
 
+        <hr class="divider">
+
     {% else %}
-        {% if results %}
-
-
-        {% else %}
-            <h4 class="alert alert-info text-center text-uppercase"> You do not have any results yet!! </h4>
-
-        {% endif %}
+        <h4 class="alert alert-info text-center text-uppercase"> You do not have any results yet!! </h4>
 
     {% endif %}
 {% endblock %}

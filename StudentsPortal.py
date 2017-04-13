@@ -8,6 +8,7 @@ from flask import Flask, render_template, redirect, url_for, request, flash, ses
 from flask_mail import Mail
 
 import MyMail
+import gmailSettings
 from dbConnect import DbConnect
 
 app = Flask(__name__)
@@ -20,11 +21,11 @@ app.config.update(
 app.config.update(
     DEBUG=True,
     # EMAIL SETTINGS
-    MAIL_SERVER="smtp.gmail.com",
-    MAIL_PORT=465,
-    MAIL_USE_SSL=True,
-    MAIL_USERNAME='ljshisya@gmail.com',
-    MAIL_PASSWORD="ChristabelRahab"
+    MAIL_SERVER=gmailSettings.mail_server,
+    MAIL_PORT=gmailSettings.mail_port,
+    MAIL_USE_SSL=gmailSettings.mail_use_ssl,
+    MAIL_USERNAME=gmailSettings.mail_username,
+    MAIL_PASSWORD=gmailSettings.mail_password
 )
 mail = Mail(app)
 
@@ -304,7 +305,32 @@ def cats_and_exams():
 @app.route('/student/dashboard/results')
 @login_required
 def results():
-    return render_template("dashboard/results.html")
+    db = DbConnect("students")
+    scores = db.get_scores(session['student_details']['registration_number'])
+
+    one = []
+    two = []
+    three = []
+    four = []
+    five = []
+    six = []
+    all_scores = [one, two, three, four, five, six]
+
+    for score in scores:
+        if score['score_year'] == 1:
+            one.append(score)
+        if score['score_year'] == 2:
+            two.append(score)
+        if score['score_year'] == 3:
+            three.append(score)
+        if score['score_year'] == 4:
+            four.append(score)
+        if score['score_year'] == 5:
+            five.append(score)
+        if score['score_year'] == 5:
+            six.append(score)
+
+    return render_template("dashboard/results.html", scores=all_scores)
 
 
 @app.route('/student/dashboard/notes')

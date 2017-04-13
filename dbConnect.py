@@ -224,6 +224,13 @@ class DbConnect(object):
 
         return results
 
+    def get_scores(self, registration_number):
+        query = "SELECT * FROM scores WHERE registration_number='{0}' ORDER BY score_id".format(registration_number)
+        self.c.execute(query)
+
+        scores = self.c.fetchall()
+        return scores
+
     def close_db(self):
         """
         Close the database
