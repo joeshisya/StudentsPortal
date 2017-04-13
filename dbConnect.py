@@ -2,164 +2,148 @@ import datetime
 import gc
 
 import MySQLdb
-from flask import session
 from passlib.hash import sha512_crypt
 
 
-def connection(database):
-    conn = MySQLdb.connect(host="localhost", user="developer", passwd="secret", db=database)
-    c = conn.cursor(MySQLdb.cursors.DictCursor)
+class DbConnect(object):
+    def __init__(self, database):
+        self.conn = MySQLdb.connect(host="localhost", user="developer", passwd="secret", db=database)
+        self.c = self.conn.cursor(MySQLdb.cursors.DictCursor)
 
-    return c, conn
+    def user_exists(self, attempted_reg_no):
+        query = "SELECT * FROM login WHERE registration_number = '{0}'".format(attempted_reg_no)
+        self.c.execute(query)
 
+        result = self.c.fetchone()
+        self.close_db()
 
-def user_exists(attempted_reg_no, c, conn):
-    query = "SELECT * FROM login WHERE registration_number = '{0}'".format(attempted_reg_no)
-    c.execute(query)
+        return True if result else False
 
-    result = c.fetchone()
-    close_db(c, conn)
+    def confirm_account(self, attempted_reg_no, attempted_password):
+        query = "SELECT * FROM login WHERE registration_number = '{0}'".format(attempted_reg_no)
+        self.c.execute(query)
 
-    return True if result else False
+        result = self.c.fetchone()
+        self.close_db()
 
+        if not result:
+            return False
 
-def confirm_account(attempted_reg_no, attempted_password, c, conn):
-    query = "SELECT * FROM login WHERE registration_number = '{0}'".format(attempted_reg_no)
-    c.execute(query)
+        if sha512_crypt.verify(attempted_password, result['user_password']):
+            return True
 
-    result = c.fetchone()
-    close_db(c, conn)
+        else:
+            return False
 
-    if not result:
-        return False
+    def add_account(self, details):
+        query = """INSERT INTO student_details (registration_number, first_name, last_name, other_names, mode_of_admission,
+                    faculty, course_level, course, email, phone_number, gender, date_of_birth, registration_date, 
+                    current_year, current_semester, disabled) 
+                    VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', '{10}', '{11}', 
+                    '{12}', '{13}', '{14}', '{15}')
+                """.format(
+                    details.get('registration_number'), details.get('first_name'), details.get('last_name'),
+                    details.get('other_names'), details.get('mode_of_admission'), details.get('level'),
+                    details.get('faculty'), details.get('course'), details.get('email'), details.get('phone_number'),
+                    details.get('gender'), details.get('dob'), datetime.datetime.now(), details.get('year'),
+                    details.get('semester'), 1)
 
-    if sha512_crypt.verify(attempted_password, result['user_password']):
-        return True
+        self.c.execute(query)
+        self.conn.commit()
 
-    else:
-        return False
+        # This is the default password given to all users
+        user_password = "password"
 
+        # Encrypt the password
+        user_password = sha512_crypt.encrypt(user_password)
 
-def add_account(details, c, conn):
-    query = """INSERT INTO student_details (registration_number, first_name, last_name, other_names, mode_of_admission,
-                faculty, course_level, course, email, phone_number, gender, date_of_birth, registration_date, 
-                current_year, current_semester, disabled) 
-                VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', '{10}', '{11}', '{12}', 
-                '{13}', '{14}', '{15}')
-            """.format(
-                details.get('registration_number'), details.get('first_name'), details.get('last_name'),
-                details.get('other_names'), details.get('mode_of_admission'), details.get('level'),
-                details.get('faculty'), details.get('course'), details.get('email'), details.get('phone_number'),
-                details.get('gender'), details.get('dob'), datetime.datetime.now(), details.get('year'),
-                details.get('semester'), 1)
+        query = """INSERT INTO login (registration_number, email, user_password) VALUES ('{0}', '{1}', '{2}')""".format(
+                    details['registration_number'], details['email'], user_password
+                )
 
-    c.execute(query)
-    conn.commit()
+        self.c.execute(query)
+        self.conn.commit()
+        self.close_db()
 
-    # This is the default password given to all users
-    user_password = "password"
+    def get_student_details(self, reg_no):
+        query = "SELECT * FROM student_details WHERE registration_number='{0}'".format(reg_no)
+        self.c.execute(query)
 
-    # Encrypt the password
-    user_password = sha512_crypt.encrypt(user_password)
+        result = self.c.fetchone()
+        self.close_db()
 
-    query = """INSERT INTO login (registration_number, email, user_password) VALUES ('{0}', '{1}', '{2}')""".format(
-                details['registration_number'], details['email'], user_password
-            )
+        return result
 
-    c.execute(query)
-    conn.commit()
-    close_db(c, conn)
+    def get_documents(self, course, year, sem):
+        query = "SELECT * FROM notes WHERE course='{0}' and year={1} and semester={2}".format(course, year, sem)
+        self.c.execute(query)
 
+        results = self.c.fetchall()
+        self.close_db()
 
-def get_student_details(reg_no, c, conn):
-    query = "SELECT * FROM student_details WHERE registration_number='{0}'".format(reg_no)
-    c.execute(query)
+        return results
 
-    result = c.fetchone()
-    close_db(c, conn)
+    def available_hostels(self, gender):
+        query = "SELECT * FROM hostels WHERE gender='{0}' AND available_spaces > 0".format(gender)
+        self.c.execute(query)
 
-    return result
+        results = self.c.fetchall()
+        self.close_db()
 
+        return results
 
-def get_documents(course, year, sem, c, conn):
-    query = "SELECT * FROM notes WHERE course='{0}' and year={1} and semester={2}".format(course, year, sem)
-    c.execute(query)
+    def occupied_hostel(self, hostel_name):
+        query = "UPDATE hostels SET available_spaces=available_spaces-1 WHERE hostel_name='{0}'".format(hostel_name)
+        self.c.execute(query)
+        self.close_db()
 
-    results = c.fetchall()
-    close_db(c, conn)
+    def assign_hostel(self, hostel_name, registration_number):
+        query = "UPDATE student_details SET hostel='{0}' WHERE registration_number='{1}'".format(hostel_name,
+                                                                                                 registration_number)
+        self.c.execute(query)
+        self.close_db()
 
-    return results
+    def add_password_reset_code(self, reset_code, registration_number):
+        query = "INSERT INTO password_reset (reset_code, registration_number) VALUES('{0}', '{1}')".format(
+                    reset_code, registration_number
+        )
+        self.c.execute(query)
+        self.close_db()
 
+    def is_valid_password_reset_link(self, reset_code):
+        query = "SELECT * FROM password_reset WHERE reset_code='{0}'".format(reset_code)
+        self.c.execute(query)
+        result = self.c.fetchone()
 
-def available_hostels(gender, c, conn):
-    query = "SELECT * FROM hostels WHERE gender='{0}' AND available_spaces > 0".format(gender)
-    c.execute(query)
+        query = "DELETE FROM password_reset WHERE reset_code='{0}'".format(reset_code)
+        self.c.execute(query)
 
-    results = c.fetchall()
-    close_db(c, conn)
+        self.close_db()
 
-    return results
+        return result
 
+    def change_password(self, reg_no, new_password):
+        new_password = sha512_crypt.encrypt(new_password)
 
-def occupied_hostel(hostel_name, c, conn):
-    query = "UPDATE hostels SET available_spaces=available_spaces-1 WHERE hostel_name='{0}'".format(hostel_name)
-    c.execute(query)
-    close_db(c, conn)
+        query = "UPDATE login SET user_password='{0}' WHERE registration_number='{1}'".format(new_password, reg_no)
+        self.c.execute(query)
 
+        self.close_db()
 
-def assign_hostel(hostel_name, registration_number, c, conn):
-    query = "UPDATE student_details SET hostel='{0}' WHERE registration_number='{1}'".format(hostel_name,
-                                                                                             registration_number)
-    c.execute(query)
-    close_db(c, conn)
+    def get_timetable(self, student_details):
+        query = """SELECT timetable.*, units.unit_code FROM timetable LEFT JOIN units ON 
+                    timetable.unit_id=units.unit_id WHERE units.course='{0}' AND  units.year='{1}' AND 
+                    units.semester='{2}'""".format(
+                        student_details['course'], student_details['current_year'], student_details['current_semester']
+        )
+        self.c.execute(query)
 
+        results = self.c.fetchall()
+        self.close_db()
 
-def add_password_reset_code(reset_code, registration_number, c, conn):
-    query = "INSERT INTO password_reset (reset_code, registration_number) VALUES('{0}', '{1}')".format(
-                reset_code, registration_number
-    )
-    c.execute(query)
-    close_db(c, conn)
+        return results
 
-
-def is_valid_password_reset_link(reset_code, c, conn):
-    query = "SELECT * FROM password_reset WHERE reset_code='{0}'".format(reset_code)
-    c.execute(query)
-    result = c.fetchone()
-
-    query = "DELETE FROM password_reset WHERE reset_code='{0}'".format(reset_code)
-    c.execute(query)
-
-    close_db(c, conn)
-
-    return result
-
-
-def change_password(reg_no, new_password, c, conn):
-    new_password = sha512_crypt.encrypt(new_password)
-
-    query = "UPDATE login SET user_password='{0}' WHERE registration_number='{1}'".format(new_password, reg_no)
-    c.execute(query)
-
-    close_db(c, conn)
-
-
-def get_timetable(c, conn):
-    query = """SELECT timetable.*, units.unit_code FROM timetable LEFT JOIN units ON 
-                timetable.unit_id=units.unit_id WHERE units.course='{0}' AND  units.year='{1}' AND 
-                units.semester='{2}'""".format(
-                    session['student_details']['course'], session['student_details']['current_year'],
-                    session['student_details']['current_semester']
-    )
-    c.execute(query)
-
-    results = c.fetchall()
-    close_db(c, conn)
-
-    return results
-
-
-def close_db(c, conn):
-    c.close()
-    conn.close()
-    gc.collect()
+    def close_db(self):
+        self.c.close()
+        self.conn.close()
+        gc.collect()

@@ -8,7 +8,7 @@ from flask import Flask, render_template, redirect, url_for, request, flash, ses
 from flask_mail import Mail
 
 import MyMail
-import dbConnect
+from dbConnect import DbConnect
 
 app = Flask(__name__)
 app.secret_key = "THOU_SHALT_NOT_KNOW_THINE_SECRET_KEY"
@@ -112,8 +112,11 @@ def login():
             return render_template("login.html", password_error="PASSWORD CANNOT BE BLANK")
 
         try:
-            c, conn = dbConnect.connection("students")
-            if dbConnect.confirm_account(reg_no, password, c, conn):
+            # c, conn = dbConnect.connection("students")
+            # if dbConnect.confirm_account(reg_no, password, c, conn):
+
+            connection = DbConnect("students")
+            if connection.confirm_account(reg_no, password):
                 session['logged_in'] = True
                 session['registration_number'] = reg_no
                 session['admin'] = False
@@ -145,8 +148,8 @@ def request_password_reset():
     if request.method == "POST":
         attempted_registration_number = request.form.get('registration_number')
 
-        c, conn = dbConnect.connection("students")
-        if dbConnect.user_exists(attempted_registration_number, c, conn):
+        connection = DbConnect("students")
+        if connection.user_exists(attempted_registration_number):
             reset_code = binascii.hexlify(os.urandom(24)).decode('ascii')
 
             message = """ You are receiving this email because someone has requested for password reset for your 
@@ -160,8 +163,8 @@ def request_password_reset():
             """.format(reset_code)
 
             if MyMail.send_mail(mail, message):
-                c, conn = dbConnect.connection("students")
-                dbConnect.add_password_reset_code(reset_code, attempted_registration_number, c, conn)
+                connection = DbConnect("students")
+                connection.add_password_reset_code(reset_code, attempted_registration_number)
                 flash('Please Check Your Email')
                 return redirect(url_for('home'))
 
@@ -181,8 +184,8 @@ def reset_password(reset_code=None):
             password_repeat = request.form.get('password_repeat')
 
             if password == password_repeat:
-                c, conn = dbConnect.connection("students")
-                dbConnect.change_password(session['user_to_change'], password, c, conn)
+                connection = DbConnect("students")
+                connection.change_password(session['user_to_change'], password)
 
                 flash("LOGIN WITH NEW PASSWORD")
                 return redirect(url_for("login"))
@@ -198,9 +201,8 @@ def reset_password(reset_code=None):
         if not reset_code:
             return redirect(url_for("request_password_reset"))
 
-        c, conn = dbConnect.connection("students")
-
-        result = dbConnect.is_valid_password_reset_link(reset_code, c, conn)
+        connection = DbConnect("students")
+        result = connection.is_valid_password_reset_link(reset_code)
 
         if result:
             session['user_to_change'] = result['registration_number']
@@ -214,8 +216,8 @@ def reset_password(reset_code=None):
 @login_required
 def dashboard():
     if 'student_details' not in session:
-        c, conn = dbConnect.connection("students")
-        session['student_details'] = dbConnect.get_student_details(session['registration_number'], c, conn)
+        connection = DbConnect("students")
+        session['student_details'] = connection.get_student_details(session['registration_number'])
 
     return render_template("dashboard.html")
 
@@ -257,8 +259,8 @@ def student_details():
 @app.route('/student/dashboard/timetable')
 @login_required
 def timetable():
-    c, conn = dbConnect.connection("students")
-    result = dbConnect.get_timetable(c, conn)
+    connection = DbConnect("students")
+    result = connection.get_timetable(session['student_details'])
 
     m = []
     t = []
@@ -293,11 +295,11 @@ def accommodation():
         if preferred_hostel == "ANY CAN DO":
             preferred_hostel = session['hostels'][0]['hostel_name']
 
-        c, conn = dbConnect.connection("university")
-        dbConnect.occupied_hostel(preferred_hostel, c, conn)
+        connection = DbConnect("university")
+        connection.occupied_hostel(preferred_hostel)
 
-        c, conn = dbConnect.connection("students")
-        dbConnect.assign_hostel(preferred_hostel, session['registration_number'], c, conn)
+        connection = DbConnect("university")
+        connection.assign_hostel(preferred_hostel, session['registration_number'])
 
         session['student_details']['hostel'] = preferred_hostel
         alert = "YOU ARE NOW A MEMBER OF {0}. TOO LAZY TO ADD ROOM NUMBER NOW, EXPECT IT LATER".format(preferred_hostel)
@@ -309,8 +311,8 @@ def accommodation():
         if not session['student_details']['hostel']:
             if 'hostels' not in session:
                 gender = session['student_details']['gender']
-                c, conn = dbConnect.connection("university")
-                hostels = dbConnect.available_hostels(gender, c, conn)
+                connection = DbConnect("university")
+                hostels = connection.available_hostels(gender)
                 session['hostels'] = hostels
 
             else:
@@ -338,8 +340,9 @@ def results():
 @app.route('/student/dashboard/notes')
 @login_required
 def notes():
-    c, conn = dbConnect.connection("students")
-    files = dbConnect.get_documents("Computer Science", 1, 1, c, conn)
+    connection = DbConnect("students")
+    files = connection.get_documents("Computer Science", session['student_details']['current_year'],
+                                     session['student_details']['current_semester'])
 
     return render_template("dashboard/notes.html", files=files)
 
@@ -378,8 +381,8 @@ def add_student():
             return render_template("admin/add_student.html", error="PLEASE FILL IN ALL MANDATORY FIELDS!")
 
         try:
-            c, conn = dbConnect.connection("students")
-            dbConnect.add_account(request.form, c, conn)
+            connection = DbConnect("students")
+            connection.add_account(request.form)
 
             flash("New Student Successfully Added")
             return render_template("admin/add_student.html")
