@@ -34,6 +34,7 @@ handler.setLevel(logging.ERROR)
 app.logger.addHandler(handler)
 
 
+# Used to ensure that a user is logged in before accessing certain pages
 def login_required(f):
     @wraps(f)
     def wrap(*args, **kwargs):
@@ -46,6 +47,7 @@ def login_required(f):
     return wrap
 
 
+# Used to limit certain pages to lectures only
 def lecturer_only(f):
     @wraps(f)
     def wrap(*args, **kwargs):
@@ -58,6 +60,7 @@ def lecturer_only(f):
     return wrap
 
 
+# Used to limit certain pages to administrators only
 def admin_only(f):
     @wraps(f)
     def wrap(*args, **kwargs):
@@ -70,35 +73,19 @@ def admin_only(f):
     return wrap
 
 
-def int_to_string(i):
-    if i == 1:
-        return "First"
-
-    elif i == 2:
-        return "Second"
-
-    elif i == 3:
-        return "Third"
-
-    elif i == 4:
-        return "Fourth"
-
-    elif i == 5:
-        return "Fifth"
-
-    elif i == 6:
-        return "Sixth"
-
-    else:
-        return "Seventh"
+def logged_in(reg_no):
+    session['logged_in'] = True
+    session['registration_number'] = reg_no
+    session['admin'] = False
+    flash("YOU HAVE SUCCESSFULLY LOGGED IN!!")
 
 
+# Home page
 @app.route('/')
 def home():
     return render_template("index.html")
 
 
-# Student Code Start
 @app.route('/student/login/', methods=["GET", "POST"])
 def login():
     if request.method == "POST":
@@ -112,15 +99,9 @@ def login():
             return render_template("login.html", password_error="PASSWORD CANNOT BE BLANK")
 
         try:
-            # c, conn = dbConnect.connection("students")
-            # if dbConnect.confirm_account(reg_no, password, c, conn):
-
             connection = DbConnect("students")
             if connection.confirm_account(reg_no, password):
-                session['logged_in'] = True
-                session['registration_number'] = reg_no
-                session['admin'] = False
-                flash("YOU HAVE SUCCESSFULLY LOGGED IN!!")
+                logged_in(reg_no)
                 return redirect(url_for("dashboard"))
 
             else:
@@ -128,17 +109,6 @@ def login():
 
         except Exception as e:
             return render_template("login.html", error=e)
-
-        # if dbConnect.confirm_account(username, password):
-        #    session['logged_in'] = True
-        #    session['username'] = username
-        #    session['admin'] = False
-        #    flash("YOU HAVE SUCCESSFULLY LOGGED IN!!")
-        #    return redirect(url_for("dashboard"))
-
-        # else:
-        #    flash("INVALID CREDENTIALS. TRY AGAIN!")
-        #    return render_template("login.html")
 
     return render_template("login.html")
 
@@ -373,6 +343,8 @@ def download_file(file):
 @app.route('/admin/add_student/', methods=["GET", "POST"])
 def add_student():
     if request.method == "POST":
+        # Ensure that all necessary fields were filled
+        # Returns an error message if not
         if not (request.form.get('registration_number') and request.form.get('first_name') and
                 request.form.get('last_name') and request.form.get('mode_of_admission') and
                 request.form.get('level') and request.form.get('course') and request.form.get('email') and
@@ -393,27 +365,25 @@ def add_student():
 
     return render_template("admin/add_student.html")
 
-# Admin Code End
 
-
-# Errors
-
-
+# Handles bad reques errors
 @app.errorhandler(400)
 def bad_request(e):
     return render_template("errors/400.html", error=e)
 
 
+# Handles page not found errors
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template("errors/404.html", error=e)
 
 
+# Handles internal server errors
 @app.errorhandler(500)
 def internal_server_error(e):
     return render_template("errors/500.html", error=e)
 
-# Errors End
 
+# Run
 if __name__ == '__main__':
     app.run()
