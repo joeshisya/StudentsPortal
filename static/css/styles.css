@@ -28,6 +28,11 @@ p
     text-transform: uppercase;
 }
 
+td
+{
+    min-width: 100px;
+}
+
 .table-label
 {
     color: #2c83e9;

@@ -5,5 +5,159 @@
 {% endblock %}
 
 {% block content %}
+    {% if m %}
+        <h4 class="text-center text-info"> MONDAY </h4>
+        <table class="table">
+            <tr>
+                <th> START </th>
+                <th> END </th>
+                <th> CAMPUS </th>
+                <th> ROOM </th>
+                <th> UNIT </th>
+            </tr>
+
+            {% for class in m %}
+                <tr>
+                    <td> {{ class['start_time'] }} HRS </td>
+                    <td> {{ class['end_time'] }} HRS </td>
+                    <td> {{ class['campus'] }} </td>
+                    <td> {{ class['lecture_hall'] }} </td>
+                    <td> {{ class['unit_code'] }} </td>
+                </tr>
+
+            {% endfor %}
+        </table>
+
+    {% endif %}
+
+    {% if t %}
+        <h4 class="text-center text-info"> TUESDAY </h4>
+
+        <table class="table">
+            <tr>
+                <th> START </th>
+                <th> END </th>
+                <th> CAMPUS </th>
+                <th> ROOM </th>
+                <th> UNIT </th>
+            </tr>
+
+            {% for class in t %}
+                <tr>
+                    <td> {{ class['start_time'] }} HRS </td>
+                    <td> {{ class['end_time'] }} HRS </td>
+                    <td> {{ class['campus'] }} </td>
+                    <td> {{ class['lecture_hall'] }} </td>
+                    <td> {{ class['unit_code'] }} </td>
+                </tr>
+
+            {% endfor %}
+        </table>
+
+    {% endif %}
+
+    {% if w %}
+        <h4 class="text-center text-info"> WEDNESDAY </h4>
+
+        <table class="table">
+            <tr>
+                <th> START </th>
+                <th> END </th>
+                <th> CAMPUS </th>
+                <th> ROOM </th>
+                <th> UNIT </th>
+            </tr>
+
+            {% for class in w %}
+                <tr>
+                    <td> {{ class['start_time'] }} HRS </td>
+                    <td> {{ class['end_time'] }} HRS </td>
+                    <td> {{ class['campus'] }} </td>
+                    <td> {{ class['lecture_hall'] }} </td>
+                    <td> {{ class['unit_code'] }} </td>
+                </tr>
+
+            {% endfor %}
+        </table>
+
+    {% endif %}
+
+    {% if th %}
+        <h4 class="text-center text-info"> THURSDAY </h4>
+
+        <table class="table">
+            <tr>
+                <th> START </th>
+                <th> END </th>
+                <th> CAMPUS </th>
+                <th> ROOM </th>
+                <th> UNIT </th>
+            </tr>
+
+            {% for class in th %}
+                <tr>
+                    <td> {{ class['start_time'] }} HRS </td>
+                    <td> {{ class['end_time'] }} HRS </td>
+                    <td> {{ class['campus'] }} </td>
+                    <td> {{ class['lecture_hall'] }} </td>
+                    <td> {{ class['unit_code'] }} </td>
+                </tr>
+
+            {% endfor %}
+        </table>
+
+    {% endif %}
+
+    {% if f %}
+        <h4 class="text-center text-info"> FRIDAY </h4>
+
+        <table class="table">
+            <tr>
+                <th> START </th>
+                <th> END </th>
+                <th> CAMPUS </th>
+                <th> ROOM </th>
+                <th> UNIT </th>
+            </tr>
+
+            {% for class in f %}
+                <tr>
+                    <td> {{ class['start_time'] }} HRS </td>
+                    <td> {{ class['end_time'] }} HRS </td>
+                    <td> {{ class['campus'] }} </td>
+                    <td> {{ class['lecture_hall'] }} </td>
+                    <td> {{ class['unit_code'] }} </td>
+                </tr>
+
+            {% endfor %}
+        </table>
+
+    {% endif %}
+
+    {% if s %}
+        <h4 class="text-center text-info"> SATURDAY </h4>
+
+        <table class="table">
+            <tr>
+                <th> START </th>
+                <th> END </th>
+                <th> CAMPUS </th>
+                <th> ROOM </th>
+                <th> UNIT </th>
+            </tr>
+
+            {% for class in s %}
+                <tr>
+                    <td> {{ class['start_time'] }} HRS </td>
+                    <td> {{ class['end_time'] }} HRS </td>
+                    <td> {{ class['campus'] }} </td>
+                    <td> {{ class['lecture_hall'] }} </td>
+                    <td> {{ class['unit_code'] }} </td>
+                </tr>
+
+            {% endfor %}
+        </table>
+
+    {% endif %}
 
 {% endblock %}

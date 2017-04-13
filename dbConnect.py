@@ -2,6 +2,7 @@ import datetime
 import gc
 
 import MySQLdb
+from flask import session
 from passlib.hash import sha512_crypt
 
 
@@ -141,6 +142,21 @@ def change_password(reg_no, new_password, c, conn):
     c.execute(query)
 
     close_db(c, conn)
+
+
+def get_timetable(c, conn):
+    query = """SELECT timetable.*, units.unit_code FROM timetable LEFT JOIN units ON 
+                timetable.unit_id=units.unit_id WHERE units.course='{0}' AND  units.year='{1}' AND 
+                units.semester='{2}'""".format(
+                    session['student_details']['course'], session['student_details']['current_year'],
+                    session['student_details']['current_semester']
+    )
+    c.execute(query)
+
+    results = c.fetchall()
+    close_db(c, conn)
+
+    return results
 
 
 def close_db(c, conn):

@@ -213,7 +213,7 @@ def reset_password(reset_code=None):
 @app.route('/student/dashboard/')
 @login_required
 def dashboard():
-    if not 'student_details' in session:
+    if 'student_details' not in session:
         c, conn = dbConnect.connection("students")
         session['student_details'] = dbConnect.get_student_details(session['registration_number'], c, conn)
 
@@ -257,7 +257,25 @@ def student_details():
 @app.route('/student/dashboard/timetable')
 @login_required
 def timetable():
-    return render_template("in_progress.html")
+    c, conn = dbConnect.connection("students")
+    result = dbConnect.get_timetable(c, conn)
+
+    m = []
+    t = []
+    w = []
+    th = []
+    f = []
+    s = []
+
+    for r in result:
+        if r['day_of_week'] == "Monday": m.append(r)
+        elif r['day_of_week'] == "Tuesday": t.append(r)
+        elif r['day_of_week'] == "Wednesday": w.append(r)
+        elif r['day_of_week'] == "Thursday": th.append(r)
+        elif r['day_of_week'] == "Friday": f.append(r)
+        elif r['day_of_week'] == "Saturday": s.append(r)
+
+    return render_template("dashboard/timetable.html", m=m, t=t, w=w, th=th, f=f, s=s)
 
 
 @app.route('/student/dashboard/accommodation', methods=["GET", "POST"])
