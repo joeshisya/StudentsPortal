@@ -335,10 +335,6 @@ def download_file(file):
     file = os.path.join(os.path.dirname(__file__), file)
     return send_file(file)
 
-# Student Code End
-
-# Admin Code Start
-
 
 @app.route('/admin/add_student/', methods=["GET", "POST"])
 def add_student():
@@ -366,7 +362,7 @@ def add_student():
     return render_template("admin/add_student.html")
 
 
-# Handles bad reques errors
+# Handles bad request errors
 @app.errorhandler(400)
 def bad_request(e):
     return render_template("errors/400.html", error=e)
