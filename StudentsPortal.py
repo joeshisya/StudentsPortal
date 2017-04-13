@@ -268,12 +268,18 @@ def timetable():
     s = []
 
     for r in result:
-        if r['day_of_week'] == "Monday": m.append(r)
-        elif r['day_of_week'] == "Tuesday": t.append(r)
-        elif r['day_of_week'] == "Wednesday": w.append(r)
-        elif r['day_of_week'] == "Thursday": th.append(r)
-        elif r['day_of_week'] == "Friday": f.append(r)
-        elif r['day_of_week'] == "Saturday": s.append(r)
+        if r['day_of_week'] == "Monday":
+            m.append(r)
+        elif r['day_of_week'] == "Tuesday":
+            t.append(r)
+        elif r['day_of_week'] == "Wednesday":
+            w.append(r)
+        elif r['day_of_week'] == "Thursday":
+            th.append(r)
+        elif r['day_of_week'] == "Friday":
+            f.append(r)
+        elif r['day_of_week'] == "Saturday":
+            s.append(r)
 
     return render_template("dashboard/timetable.html", m=m, t=t, w=w, th=th, f=f, s=s)
 
