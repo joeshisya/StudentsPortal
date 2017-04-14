@@ -54,12 +54,11 @@
 
             {% block body %}
             {% endblock %}
-
-            <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.js') }}"></script>
-            <script type="text/javascript" src="{{ url_for('static', filename='js/script.js') }}"></script>
-            <script src="//code.jquery.com/jquery-3.2.0.min.js"></script>
         </div>
 
+        <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.2.1.min.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/script.js') }}"></script>
     </body>
 
 </html>

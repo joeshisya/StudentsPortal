@@ -8,7 +8,6 @@ body
     min-height: 100%;
     padding-left: 40px;
     padding-right: 40px;
-    background-image: linear-gradient(white, #d3edef, #bbd7d7);
     padding-bottom: 45px;
 }
 
@@ -161,4 +160,11 @@ td
 {
     width: 100%;
     margin-bottom: 15px;
+}
+
+.collapse.in
+{
+    min-height: 50px;
+    border: 1px solid blue;
+    padding: 25px;
 }

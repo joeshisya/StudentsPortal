@@ -190,19 +190,19 @@ def dashboard():
         connection = DbConnect("students")
         session['student_details'] = connection.get_student_details(session['registration_number'])
 
-    return render_template("dashboard.html")
+    return render_template("dashboard/dashboard.html")
 
 
 @app.route('/student/dashboard/inbox')
 @login_required
 def inbox():
-    return render_template("in_progress.html")
+    return render_template("production/in_progress.html")
 
 
 @app.route('/student/dashboard/settings')
 @login_required
 def settings():
-    return render_template("in_progress.html")
+    return render_template("production/in_progress.html")
 
 
 @app.route('/student/logout/')
@@ -299,7 +299,7 @@ def accommodation():
 @app.route('/student/dashboard/cats_and_exams')
 @login_required
 def cats_and_exams():
-    return render_template("in_progress.html")
+    return render_template("production/in_progress.html")
 
 
 @app.route('/student/dashboard/results')
@@ -317,6 +317,11 @@ def results():
     all_scores = [one, two, three, four, five, six]
 
     for score in scores:
+        for key in score:
+            if not score[key]:
+                score[key] = "N/A"
+
+    for score in scores:
         if score['score_year'] == 1:
             one.append(score)
         if score['score_year'] == 2:
@@ -327,7 +332,7 @@ def results():
             four.append(score)
         if score['score_year'] == 5:
             five.append(score)
-        if score['score_year'] == 5:
+        if score['score_year'] == 6:
             six.append(score)
 
     return render_template("dashboard/results.html", scores=all_scores)
@@ -346,13 +351,13 @@ def notes():
 @app.route('/student/dashboard/attendance')
 @login_required
 def attendance():
-    return render_template("in_progress.html")
+    return render_template("production/in_progress.html")
 
 
 @app.route('/student/dashboard/fees')
 @login_required
 def fees():
-    return render_template("in_progress.html")
+    return render_template("production/in_progress.html")
 
 
 @app.route('/student/dashboard/notes/<path:file>')

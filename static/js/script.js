@@ -1,17 +1,10 @@
-function toggle(showHideDiv, switchTextDiv)
+$('#paragraph').click(function()
 {
-	var ele = document.getElementById(showHideDiv);
-	var text = document.getElementById(switchTextDiv);
+    $('#paragraph').hide();
+});
 
-	if(ele.style.display === "block")
-	{
-	    ele.style.display = "none";
-  	}
-
-	else
-    {
-        ele.style.display = "block";
-
-	}
-
-}
+var $scoreGroup = $('#scoreGroup');
+$scoreGroup.on('hidden.bs.collapse', function()
+{
+	$scoreGroup.find('.collapse.in').collapse('hide');
+});
