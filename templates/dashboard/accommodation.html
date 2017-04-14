@@ -24,9 +24,9 @@
 
                 <div>
                     <p class="text-info">
-                        There seems to be some rooms that are available. If you are interested in booking a room within the
-                        school grounds, please submit the form below. If you are not interested in receiving a room in a
-                        specific hostel select the option 'ANY CAN DO'
+                        There seems to be some rooms that are available. If you are interested in booking a room
+                        <span class="text-warning text-uppercase"> within the school grounds </span>, please submit the
+                        form below. If you are not interested in receiving a room in a specific hostel select the option 'ANY CAN DO'
                         and submit.
                     </p>
                 </div>
@@ -44,13 +44,26 @@
                         <option selected> ANY CAN DO </option>
 
                         {% for hostel in hostels %}
-                            <option value="{{ hostel['hostel_name'] }}"> {{ hostel['hostel_name'] }} - Available Beds : {{ hostel['available_spaces'] }}</option>
+                            <option value="{{ hostel['hostel_name'] }}">
+                                {{ hostel['hostel_name'] }} - Available Beds : {{ hostel['available_spaces'] }}
+                            </option>
                         {% endfor %}
                     </select> <br> <br>
 
-
                     <input type="submit" value="BOOK" class="btn btn-info">
                 </form>
+
+                <br><br>
+
+                <div class="alert alert-warning bottom">
+                    <p class="text-info text-uppercase">
+                        <span class="glyphicon glyphicon-alert"></span>
+                        Those who do not wish to get accommodation within the school provided hostels are free to seek
+                        for accommodation from one of the various privately owned hostels. You should contact the
+                        caretakers of the respective private hostels as this page does not cater for those hostels.
+                    </p>
+                </div>
+
             </form>
 
 
