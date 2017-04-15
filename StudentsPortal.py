@@ -1,4 +1,5 @@
 import binascii
+import collections
 import gc
 import logging
 import os
@@ -302,11 +303,18 @@ def cats_and_exams():
     db = DbConnect('students')
     exams = db.get_exams(session['student_details'])
 
+    result = collections.defaultdict(list)
+
+    for exam in exams:
+        result[exam['unit_code']].append(exam)
+
+    exam_list = result.values()
+
     for exam in exams:
         if exam['start_time'] == exam['end_time']:
             exam['start_time'] = exam['end_time'] = "N/A"
 
-    return render_template("dashboard/cats_and_exams.html", exams=exams)
+    return render_template("dashboard/cats_and_exams.html", exam_list=exam_list)
 
 
 @app.route('/student/dashboard/results')

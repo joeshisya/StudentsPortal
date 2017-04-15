@@ -5,42 +5,44 @@
 {% endblock %}
 
 {% block content %}
-    {% if exams %}
-        <table class="table">
-            <tr>
-                <th> UNIT </th>
-                <th> TYPE </th>
-                <th> DATE </th>
-                <th> START </th>
-                <th> END </th>
-                <th> CAMPUS </th>
-                <th> LECTURE HALL </th>
-                <th> SUPERVISOR </th>
-                <th> COMPLETED </th>
-            </tr>
-
-            {% for exam in exams %}
+    {% if exam_list %}
+        {% for exams in exam_list %}
+            <table class="table">
                 <tr>
-                    <td> {{ exam['unit_code'] }} </td>
-                    <td> {{ exam['exam_type'] }} </td>
-                    <td> {{ exam['exam_date'] }} </td>
-                    <td> {{ exam['start_time'] }} </td>
-                    <td> {{ exam['end_time'] }} </td>
-                    <td> {{ exam['campus'] }} </td>
-                    <td> {{ exam['lecture_hall'] }} </td>
-                    <td> {{ exam['unit_lecturer'] }} </td>
-                    {% if exam['done'] %}
-                        <td> <span class="glyphicon glyphicon-ok"></span> </td>
-
-                    {% else %}
-                        <td> <span class="glyphicon glyphicon-remove"></span> </td>
-
-                    {% endif %}
+                    <th> UNIT </th>
+                    <th> TYPE </th>
+                    <th> DATE </th>
+                    <th> START </th>
+                    <th> END </th>
+                    <th> CAMPUS </th>
+                    <th> HALL </th>
+                    <th> SUPERVISOR </th>
+                    <th> COMPLETED </th>
                 </tr>
 
-            {% endfor %}
-        </table>
+                {% for exam in exams %}
+                    <tr>
+                        <td> {{ exam['unit_code'] }} </td>
+                        <td> {{ exam['exam_type'] }} </td>
+                        <td> {{ exam['exam_date'] }} </td>
+                        <td> {{ exam['start_time'] }} </td>
+                        <td> {{ exam['end_time'] }} </td>
+                        <td> {{ exam['campus'] }} </td>
+                        <td> {{ exam['lecture_hall'] }} </td>
+                        <td> {{ exam['unit_lecturer'] }} </td>
+                        {% if exam['done'] %}
+                            <td> <span class="glyphicon glyphicon-ok"></span> </td>
 
+                        {% else %}
+                            <td> <span class="glyphicon glyphicon-remove"></span> </td>
+
+                        {% endif %}
+                    </tr>
+
+                {% endfor %}
+            </table>
+
+        {% endfor %}
     {% endif %}
 
 {% endblock %}
