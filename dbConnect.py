@@ -250,6 +250,28 @@ class DbConnect(object):
 
         return results
 
+    def get_fees(self, student_details):
+        """
+        Gets the fee balance and fee payment history of the student
+        :param student_details: Details of the current student
+        :return Students payment history as a list
+        """
+
+        query = " SELECT * FROM payments WHERE registration_number='{}'".format(student_details['registration_number'])
+        self.c.execute(query)
+
+        results = self.c.fetchall()
+        self.close_db()
+
+        return results
+
+    def update_fees(self, o, t, th, f, fv):
+        query = """INSERT INTO fees (registration_number, course, year, semester, amount) VALUES(
+                    '{0}', '{1}', '{2}', '{3}', '{4}'
+                )""".format(o, t, th, f, fv)
+        self.c.execute(query)
+
+
     def close_db(self):
         """
         Close the database

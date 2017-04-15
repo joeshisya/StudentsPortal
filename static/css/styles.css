@@ -266,12 +266,14 @@ body
 .dash-tab
 {
     margin-bottom: 20px;
+    display: inline-block;
 }
 
 .dash-tab img
 {
     display: inline-block;
     border-radius: 50%;
+    border: 1px solid black;
 }
 
 .small
@@ -290,4 +292,23 @@ body
 {
     height: 625px;
     width: 625px;
+}
+
+.over_pay
+{
+    color: #008000
+}
+
+.under_pay
+{
+    color: #CC0000
+}
+
+.info-tabs
+{
+    background: #87CEFA;
+    display: table;
+    align-self: center;
+    padding: 15px;
+    margin: 0 auto;
 }

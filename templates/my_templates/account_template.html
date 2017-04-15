@@ -59,7 +59,16 @@
             <div class="col-md-12">
                 <p><a href="#" data-toggle="offcanvas"><span class="glyphicon glyphicon-arrow-left"></span></a></p>
 
+            <!--
+                {% set sections = request.path.split('/') %}
+                {% set last_section = sections[-1] %}
+
+                <div class="alert">
+                <h4 class="text-center text-uppercase"> {{ last_section }} </h4>
+                </div>
+            -->
                 {% block content %}
+
                 {% endblock %}
 
             </div>

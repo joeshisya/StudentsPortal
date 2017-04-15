@@ -5,32 +5,36 @@
 {% endblock %}
 
 {% block content %}
+    <div class="row dash-tabs">
+    <a href="#">
+        <div class="col-xs-4 col-sm-3 info-tabs">
+            <h4> Notifications: <span class="badge"> 0 </span> </h4>
 
-    <div class="main">
-          <h1 class="page-header">Dashboard</h1>
+        </div>
+    </a>
 
-          <div class="row dash-tabs">
-                <div class="col-xs-4 col-sm-3 dash-tab">
-                    <img src="{{ url_for('static', filename='images/main_logo.png') }}" class="img-responsive medium">
+    <a href="#">
+        <div class="col-xs-4 col-sm-3 info-tabs">
+            <h4> Messages: <span class="badge"> 0 </span> </h4>
 
-                    <h4> Notifications <span class="badge"> 0 </span> </h4>
-                </div>
+        </div>
+    </a>
 
-                <div class="col-xs-6 col-sm-3 dash-tab">
-                    <img src="{{ url_for('static', filename='images/main_logo.png') }}" class="img-responsive medium">
+    <a href="#">
+        <div class="col-xs-4 col-sm-3 info-tabs">
+            <h4> Others: <span class="badge"> 0 </span> </h4>
 
-                    <h4> Messages <span class="badge"> 0 </span> </h4>
-                </div>
-                <div class="col-xs-4 col-sm-3 dash-tab">
-                    <img src="{{ url_for('static', filename='images/main_logo.png') }}" class="img-responsive medium">
+        </div>
+    </a>
 
-                    <h4> Other <span class="badge"> 3 </span> </h4>
-                </div>
+    <a href="#">
+        <div class="col-xs-4 col-sm-3 info-tabs">
+            <h4> Others: <span class="badge"> 0 </span> </h4>
 
-                <div class="col-xs-6 col-sm-3 dash-tab">
-                    <img src="{{ url_for('static', filename='images/main_logo.png') }}" class="img-responsive medium">
-                    <h4> Other <span class="badge"> 2 </span>  </h4>
-                </div>
-          </div>
+        </div>
+    </a>
+
+    <hr>
+
 
 {% endblock %}

@@ -5,5 +5,58 @@
 {% endblock %}
 
 {% block content %}
+    {% set fee_balance = session['student_details']['fee_balance'] %}
+
+    {% if fee_balance < 0 %}
+        {% set bal_class = "over_pay" %}
+
+    {% else %}
+        {% set bal_class = "under_pay" %}
+
+    {% endif %}
+
+    <div class="info-tabs">
+        <p> THIS SEMESTERS FEE:  </p>
+        <p> YOU PAID: </p>
+        <p> LAST SEMESTERS OVERPAYMENTS: </p>
+        <p class="{{ bal_class }}"> CURRENT BALANCE: {{ fee_balance }} </p>
+    </div>
+
+
+    <!--
+    <div>
+        <canvas id="canvas" style="width:300px; height:300px;"></canvas>
+    </div>
+    -->
+
+    <hr>
+    <h4 class="text-center"> YOUR PAYMENT HISTORY </h4>
+    <hr>
+
+    {% if payment_history %}
+        <table class="table">
+            <tr>
+                <th> TRANSACTION ID</th>
+                <th> TRANSACTION DATE </th>
+                <th> TRANSACTION CHANNEL </th>
+                <th> AMOUNT </th>
+                <th> BALANCE AFTER </th>
+            </tr>
+            {% for payment in payment_history %}
+                <tr>
+                    <td> {{ payment['transaction_id'] }} </td>
+                    <td> {{ payment['transaction_date'] }} </td>
+                    <td> {{ payment['transaction_channel'] }} </td>
+                    <td> {{ payment['transaction_amount'] }} </td>
+                    <td> <!-- {{ payment['balance_after'] }} --> TODO </td>
+                </tr>
+
+            {% endfor %}
+        </table>
+
+    {% else %}
+        <div class="alert alert-info"> YOUR HAVE NOT MADE ANY PAYMENTS YET </div>
+
+    {% endif %}
 
 {% endblock %}

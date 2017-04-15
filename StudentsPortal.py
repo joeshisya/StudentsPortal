@@ -372,7 +372,13 @@ def attendance():
 @app.route('/student/dashboard/fees')
 @login_required
 def fees():
-    return render_template("production/in_progress.html")
+    db = DbConnect("students")
+    history = db.get_fees(session['student_details'])
+
+    year = [1, 2, 3, 4]
+    sem = [1, 2]
+
+    return render_template("dashboard/fees.html", payment_history=history)
 
 
 @app.route('/student/dashboard/notes/<path:file>')
