@@ -1,4 +1,4 @@
-{% extends "account_template.html" %}
+{% extends "my_templates/account_template.html" %}
 
 {% block title %}
     RESULTS
@@ -6,39 +6,80 @@
 
 {% block content %}
     {% if scores %}
-        {% for year in scores %}
-            {%  if year %}
-                <h4 class="text-center text-info"> YEAR {{ year[0]['score_year'] }} </h4>
+        <div role="tabpanel">
+            <ul class="nav nav-tabs" role="tablist">
+                {% for year in scores %}
+                    {% if year %}
+                        {% set y = year[0]['score_year'] %}
+                            {% if year[0]['score_year'] == session['student_details']['current_year'] %}
+                                <li role="presentation" class="active">
+                                    <a href="#{{ y }}" aria-controls="{{ y }}" role="tab" data-toggle="tab">
+                                        YEAR {{ y }}
+                                    </a>
+                                </li>
 
-                <table class="table">
-                    <tr>
-                        <th> Unit </th>
-                        <th> Assignment </th>
-                        <th> Cat 1 </th>
-                        <th> Cat 2 </th>
-                        <th> Exam </th>
-                        <th> Total </th>
-                        <th> Grade </th>
-                    </tr>
+                            {% else %}
+                                <li role="presentation">
+                                    <a href="#{{ y }}" aria-controls="{{ y }}" role="tab" data-toggle="tab">
+                                        YEAR {{ y }}
+                                    </a>
+                                </li>
 
-                    {% for unit in year %}
-                        <tr>
-                            <td> {{  unit['unit'] }} </td>
-                            <td> {{ unit['assignment'] }} </td>
-                            <td> {{ unit['cat1'] }} </td>
-                            <td> {{ unit['cat2'] }} </td>
-                            <td> {{ unit['exam'] }} </td>
-                            <td> {{ unit['total'] }} </td>
-                            <td> {{ unit['grade'] }} </td>
-                        </tr>
-                    {% endfor %}
+                            {% endif %}
 
-                </table>
-            {%  endif %}
-        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+            </ul>
 
-        <hr class="divider">
+            <div class="tab-content">
+                {% for year in scores %}
+                    {% if year %}
+                        {% if year[0]['score_year'] == session['student_details']['current_year'] %}
+                            <div role="tabpanel" class="tab-pane active" id="{{ year[0]['score_year'] }}">
 
+                        {% else %}
+                            <div role="tabpanel" class="tab-pane" id="{{ year[0]['score_year'] }}">
+
+                        {% endif %}
+
+
+
+                            <table class="table">
+                                <tr>
+                                    <th> Unit </th>
+                                    <th> Assignment </th>
+                                    <th> Cat 1 </th>
+                                    <th> Cat 2 </th>
+                                    <th> Exam </th>
+                                    <th> Total </th>
+                                    <th> Grade </th>
+                                </tr>
+
+                                {% for unit in year %}
+                                    <tr>
+                                        <td> {{ unit['unit'] }} </td>
+                                        <td> {{ unit['assignment'] }} </td>
+                                        <td> {{ unit['cat1'] }} </td>
+                                        <td> {{ unit['cat2'] }} </td>
+                                        <td> {{ unit['exam'] }} </td>
+                                        <td> {{ unit['total'] }} </td>
+                                        <td> {{ unit['grade'] }} </td>
+                                    </tr>
+                                {% endfor %}
+
+                            </table>
+                        </div>
+
+                    {%  endif %}
+                {% endfor %}
+
+            </div>
+        </div>
+
+        <div>
+            <p class="text-info"> A star(*) indicates a missing mark for the respective unit </p>
+            <p class="text-info"> If you have failed any units, please retake them when they are next offered </p>
+        </div>
     {% else %}
         <h4 class="alert alert-info text-center text-uppercase"> You do not have any results yet!! </h4>
 

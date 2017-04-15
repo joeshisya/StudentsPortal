@@ -1,0 +1,49 @@
+{% extends "my_templates/main_template.html" %}
+
+{% block body %}
+    <div class="wrapper">
+        <div class="row row-offcanvas row-offcanvas-left">
+            <!-- sidebar -->
+            <div class="column col-sm-3 col-xs-1 sidebar-offcanvas" id="sidebar">
+
+                <a href="{{ url_for("dashboard") }}">
+
+                    {% if session['student_details']['gender'] == "Female" %}
+                        <img src="{{ url_for('static', filename='images/female_user.png') }}"
+                         class="img-circle profile-image">
+
+                    {% else %}
+                        <img src="{{ url_for('static', filename='images/male_user.jpg') }}"
+                         class="img-circle profile-image">
+
+                    {% endif %}
+
+                </a>
+
+                <ul class="nav" id="menu">
+                    <li><a href="{{ url_for("student_details") }}"> STUDENT DETAILS </a></li>
+                    <li><a href="{{ url_for("timetable") }}"> TIMETABLE </a></li>
+                    <li><a href="{{ url_for("accommodation") }}"> ACCOMMODATION </a></li>
+                    <li><a href="{{ url_for("cats_and_exams") }}"> CATS AND EXAMS </a></li>
+                    <li><a href="{{ url_for("results") }}"> RESULTS </a></li>
+                    <li><a href="{{ url_for("notes") }}"> NOTES </a></li>
+                    <li><a href="{{ url_for("fees") }}"> FEES </a></li>
+                </ul>
+            </div>
+            <!-- /sidebar -->
+
+            <!-- main right col -->
+            <div class="column col-sm-9 col-xs-11" id="main">
+                <p><a href="#" data-toggle="offcanvas"><span class="glyphicon glyphicon-arrow-left"></span></a></p>
+
+                {% block content %}
+                {% endblock %}
+            </div>
+            <!-- /main -->
+        </div>
+    </div>
+
+    <div class="container-fluid">
+    </div>
+
+{% endblock %}

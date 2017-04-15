@@ -212,7 +212,7 @@ class DbConnect(object):
         :return: 
         """
 
-        query = """SELECT timetable.*, units.unit_code FROM timetable LEFT JOIN units ON 
+        query = """SELECT timetable.*, units.unit_code, units.unit_lecturer FROM timetable LEFT JOIN units ON 
                     timetable.unit_id=units.unit_id WHERE units.course='{0}' AND  units.year='{1}' AND 
                     units.semester='{2}'""".format(
                         student_details['course'], student_details['current_year'], student_details['current_semester']
@@ -230,6 +230,25 @@ class DbConnect(object):
 
         scores = self.c.fetchall()
         return scores
+
+    def get_exams(self, student_details):
+        """
+        Gets the assignments, cats and exam details from the database
+        :param student_details: Details of the current student
+        :return A list of assignments, cats and exams 
+        """
+
+        query = """ SELECT exams.*, units.unit_code, units.unit_lecturer FROM exams LEFT JOIN units ON
+                    exams.unit_id=units.unit_id WHERE units.course='{0}' AND  units.year='{1}' AND 
+                    units.semester='{2}'""".format(
+                        student_details['course'], student_details['current_year'], student_details['current_semester']
+        )
+        self.c.execute(query)
+
+        results = self.c.fetchall()
+        self.close_db()
+
+        return results
 
     def close_db(self):
         """

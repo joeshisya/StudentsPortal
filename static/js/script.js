@@ -1,5 +1,10 @@
-/* off-canvas sidebar toggle */
-$('[data-toggle=offcanvas]').click(function() {
-    $('.row-offcanvas').toggleClass('active');
-    $('.collapse').toggleClass('in').toggleClass('hidden-xs').toggleClass('visible-xs');
+$('#paragraph').click(function()
+{
+    $('#paragraph').hide();
+});
+
+var $scoreGroup = $('#scoreGroup');
+$scoreGroup.on('hidden.bs.collapse', function()
+{
+	$scoreGroup.find('.collapse.in').collapse('hide');
 });
