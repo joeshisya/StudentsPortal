@@ -299,7 +299,14 @@ def accommodation():
 @app.route('/student/dashboard/cats_and_exams')
 @login_required
 def cats_and_exams():
-    return render_template("production/in_progress.html")
+    db = DbConnect('students')
+    exams = db.get_exams(session['student_details'])
+
+    for exam in exams:
+        if exam['start_time'] == exam['end_time']:
+            exam['start_time'] = exam['end_time'] = "N/A"
+
+    return render_template("dashboard/cats_and_exams.html", exams=exams)
 
 
 @app.route('/student/dashboard/results')
