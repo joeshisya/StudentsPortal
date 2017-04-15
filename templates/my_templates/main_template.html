@@ -8,52 +8,66 @@
         <link rel="shortcut icon" href="{{ url_for("static", filename="favicon.ico") }}">
     </head>
 
-    <body class="max-height">
-
-        <header>
-            <div class="navbar-header">
-                <a class="navbar-brand" href="/">
-                    <img src="{{ url_for('static', filename='images/main_logo.png') }}">
-                </a>
-            </div>
-
+    <body>
+        <nav class="navbar navbar-fixed-top">
             <div class="container-fluid">
-                <ul class="nav navbar-nav navbar-right">
-                    {% if session.logged_in %}
-                        <li> <a href="{{ url_for("dashboard") }}"> <span class="glyphicon glyphicon-dashboard"></span> {{ session.registration_number }} </a> </li>
-                        <!-- <li> <a href="{{ url_for("dashboard") }}"> <span class="glyphicon glyphicon-dashboard"></span> DASHBOARD </a> </li> -->
-                        <li> <a href="{{ url_for("inbox") }}"> <span class="glyphicon glyphicon-inbox"></span> INBOX </a> </li>
-                        <li> <a href="{{ url_for("settings") }}"> <span class="glyphicon glyphicon-cog"></span> SETTINGS </a> </li>
-                        <li> <a href="{{ url_for("logout") }}"> <span class="glyphicon glyphicon-log-out"></span> LOGOUT </a> </li>
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                            data-target="#navbar" aria-expanded="false" aria-controls="navbar">
 
-                    {% else %}
-                        <li> <a href="{{ url_for("login") }}"> <span class="glyphicon glyphicon-log-in"></span> LOGIN </a> </li>
-                        <li> <a href="{{ url_for("request_password_reset") }}">  <span class="glyphicon glyphicon-pencil"></span> RESET PASSWORD </a> </li>
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
 
-                    {% endif %}
-                </ul>
+                    <a class="navbar-brand" href="/">
+                        SCHOOL PORTAL
+                        <!-- <img src="{{ url_for('static', filename='images/main_logo.png') }}"> -->
+                    </a>
+                </div>
+
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        {% if session.logged_in %}
+                            <li> <a href="{{ url_for("dashboard") }}"> <span class="glyphicon glyphicon-dashboard"></span> {{ session.registration_number }} </a> </li>
+                            <li> <a href="{{ url_for("inbox") }}"> <span class="glyphicon glyphicon-inbox"></span> INBOX </a> </li>
+                            <li> <a href="{{ url_for("settings") }}"> <span class="glyphicon glyphicon-cog"></span> SETTINGS </a> </li>
+                            <li> <a href="{{ url_for("logout") }}"> <span class="glyphicon glyphicon-log-out"></span> LOGOUT </a> </li>
+
+                        {% else %}
+                            <li> <a href="{{ url_for("login") }}"> <span class="glyphicon glyphicon-log-in"></span> LOGIN </a> </li>
+                            <li> <a href="{{ url_for("request_password_reset") }}">  <span class="glyphicon glyphicon-pencil"></span> RESET PASSWORD </a> </li>
+
+                        {% endif %}
+                    </ul>
+
+                    <form class="navbar-form navbar-right">
+                        <input type="text" class="form-control" placeholder="Search...">
+                    </form>
+                </div>
             </div>
-        </header>
+        </nav>
 
-        <hr class="divider">
+        <div class="container-fluid">
+            <div class="row">
+                {% with messages = get_flashed_messages() %}
+                    {%  if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-success" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
 
-        <div class="main_div">
-            {% with messages = get_flashed_messages() %}
-                {%  if messages %}
-                    {% for message in messages %}
-                        <div class="alert alert-success" role="alert">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
 
-                            {{ message }}
-                        </div>
-                    {% endfor %}
-                {% endif %}
-            {% endwith %}
-
-            {% block body %}
-            {% endblock %}
+                {% block body %}
+                {% endblock %}
+            </div>
         </div>
 
         <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.2.1.min.js') }}"></script>

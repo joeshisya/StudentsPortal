@@ -1,49 +1,69 @@
 {% extends "my_templates/main_template.html" %}
 
 {% block body %}
-    <div class="wrapper">
-        <div class="row row-offcanvas row-offcanvas-left">
-            <!-- sidebar -->
-            <div class="column col-sm-3 col-xs-1 sidebar-offcanvas" id="sidebar">
+    <div class="sidebar nav-side-menu">
+        <div class="brand">
+            <a href="{{ url_for("dashboard") }}">
+                {% if session['student_details']['gender'] == "Female" %}
+                    <img src="{{ url_for('static', filename='images/female_user.png') }}"
+                     class="img-circle profile-image">
 
-                <a href="{{ url_for("dashboard") }}">
+                {% else %}
+                    <img src="{{ url_for('static', filename='images/male_user.jpg') }}"
+                     class="img-circle profile-image">
 
-                    {% if session['student_details']['gender'] == "Female" %}
-                        <img src="{{ url_for('static', filename='images/female_user.png') }}"
-                         class="img-circle profile-image">
+                {% endif %}
 
-                    {% else %}
-                        <img src="{{ url_for('static', filename='images/male_user.jpg') }}"
-                         class="img-circle profile-image">
+            </a>
+        </div>
 
-                    {% endif %}
+        <span class="glyphicon glyphicon-arrow-left toggle-btn" data-toggle="collapse" data-target="#menu-content"></span>
 
-                </a>
+        <div class="menu-list">
+            <ul class="nav nav-sidebar">
+                <li>
+                    <a href="{{ url_for("student_details") }}"> STUDENT DETAILS </a>
+                </li>
 
-                <ul class="nav" id="menu">
-                    <li><a href="{{ url_for("student_details") }}"> STUDENT DETAILS </a></li>
-                    <li><a href="{{ url_for("timetable") }}"> TIMETABLE </a></li>
-                    <li><a href="{{ url_for("accommodation") }}"> ACCOMMODATION </a></li>
-                    <li><a href="{{ url_for("cats_and_exams") }}"> CATS AND EXAMS </a></li>
-                    <li><a href="{{ url_for("results") }}"> RESULTS </a></li>
-                    <li><a href="{{ url_for("notes") }}"> NOTES </a></li>
-                    <li><a href="{{ url_for("fees") }}"> FEES </a></li>
+                <li data-toggle="collapse" data-target="#timetables" class="collapsed">
+                    <a href="#"> TIMETABLES </a>
+                </li>
+
+                <ul class="collapse" id="timetables">
+                    <li> <a href="{{ url_for("timetable") }}"> CLASSES </a> </li>
+                    <li> <a href="{{ url_for("cats_and_exams") }}"> CATS AND EXAMS </a> </li>
                 </ul>
-            </div>
-            <!-- /sidebar -->
 
-            <!-- main right col -->
-            <div class="column col-sm-9 col-xs-11" id="main">
+                <li>
+                    <a href="{{ url_for("accommodation") }}"> ACCOMMODATION </a>
+                </li>
+
+                <li>
+                    <a href="{{ url_for("results") }}"> RESULTS </a>
+                </li>
+
+                <li>
+                    <a href="{{ url_for("notes") }}"> NOTES </a>
+                </li>
+
+                <li>
+                    <a href="{{ url_for("fees") }}"> FEES </a>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+    <div class="container" id="main">
+        <div class="row">
+            <div class="col-md-12">
                 <p><a href="#" data-toggle="offcanvas"><span class="glyphicon glyphicon-arrow-left"></span></a></p>
 
                 {% block content %}
                 {% endblock %}
-            </div>
-            <!-- /main -->
-        </div>
-    </div>
 
-    <div class="container-fluid">
+            </div>
+        </div>
     </div>
 
 {% endblock %}
