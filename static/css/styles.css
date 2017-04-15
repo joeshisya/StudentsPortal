@@ -45,12 +45,6 @@ td
     margin: 15px 0 15px 0;
 }
 
-.year-display
-{
-    width: 100%;
-    margin-bottom: 15px;
-}
-
 .collapse.in
 {
     min-height: 50px;
@@ -258,24 +252,42 @@ body
     margin-top: 0;
 }
 
-.placeholders
+.dash-tabs
 {
     margin-bottom: 30px;
     text-align: center;
 }
 
-.placeholders h4
+.dash-tabs h4
 {
     margin-bottom: 0;
 }
 
-.placeholder
+.dash-tab
 {
     margin-bottom: 20px;
 }
 
-.placeholder img
+.dash-tab img
 {
     display: inline-block;
     border-radius: 50%;
+}
+
+.small
+{
+    height: 100px;
+    width: 100px;
+}
+
+.medium
+{
+    height: 250px;
+    width: 250px;
+}
+
+.large
+{
+    height: 625px;
+    width: 625px;
 }

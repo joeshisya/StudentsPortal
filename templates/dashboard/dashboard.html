@@ -6,8 +6,31 @@
 
 {% block content %}
 
-    <div class="alert alert-info"> Notification Area </div>
+    <div class="main">
+          <h1 class="page-header">Dashboard</h1>
 
-    <div class="alert alert-info"> New Messages Preview </div>
+          <div class="row dash-tabs">
+                <div class="col-xs-4 col-sm-3 dash-tab">
+                    <img src="{{ url_for('static', filename='images/main_logo.png') }}" class="img-responsive medium">
+
+                    <h4> Notifications <span class="badge"> 0 </span> </h4>
+                </div>
+
+                <div class="col-xs-6 col-sm-3 dash-tab">
+                    <img src="{{ url_for('static', filename='images/main_logo.png') }}" class="img-responsive medium">
+
+                    <h4> Messages <span class="badge"> 0 </span> </h4>
+                </div>
+                <div class="col-xs-4 col-sm-3 dash-tab">
+                    <img src="{{ url_for('static', filename='images/main_logo.png') }}" class="img-responsive medium">
+
+                    <h4> Other <span class="badge"> 3 </span> </h4>
+                </div>
+
+                <div class="col-xs-6 col-sm-3 dash-tab">
+                    <img src="{{ url_for('static', filename='images/main_logo.png') }}" class="img-responsive medium">
+                    <h4> Other <span class="badge"> 2 </span>  </h4>
+                </div>
+          </div>
 
 {% endblock %}
