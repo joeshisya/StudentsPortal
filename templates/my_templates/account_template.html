@@ -1,7 +1,7 @@
 {% extends "my_templates/main_template.html" %}
 
 {% block body %}
-    <div class="sidebar nav-side-menu">
+    <div id="sidebar" class="sidebar nav-side-menu">
         <div class="brand">
             <a href="{{ url_for("dashboard") }}">
                 {% if session['student_details']['gender'] == "Female" %}
@@ -17,9 +17,13 @@
             </a>
         </div>
 
-        <span class="glyphicon glyphicon-arrow-left toggle-btn" data-toggle="collapse" data-target="#menu-content"></span>
+        <div id="toggle" >
+            <button>
+                <span class="glyphicon glyphicon-arrow-left"> </span>
+            </button>
+        </div>
 
-        <div class="menu-list">
+        <div class="menu-list" id="menu-list">
             <ul class="nav nav-sidebar">
                 <li>
                     <a href="{{ url_for("student_details") }}"> STUDENT DETAILS </a>
@@ -55,24 +59,24 @@
     </div>
 
     <div class="container" id="main">
-        <div class="row">
-            <div class="col-md-12">
-                <p><a href="#" data-toggle="offcanvas"><span class="glyphicon glyphicon-arrow-left"></span></a></p>
+        <!-- Shows messages to the user -->
+        {% with messages = get_flashed_messages() %}
+            {%  if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-success alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
 
-            <!--
-                {% set sections = request.path.split('/') %}
-                {% set last_section = sections[-1] %}
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
 
-                <div class="alert">
-                <h4 class="text-center text-uppercase"> {{ last_section }} </h4>
-                </div>
-            -->
-                {% block content %}
+        {% block content %}
 
-                {% endblock %}
-
-            </div>
-        </div>
+        {% endblock %}
     </div>
 
 {% endblock %}

@@ -16,10 +16,25 @@
     {% endif %}
 
     <div class="info-tabs">
-        <p> THIS SEMESTERS FEE:  </p>
-        <p> YOU PAID: </p>
-        <p> LAST SEMESTERS OVERPAYMENTS: </p>
-        <p class="{{ bal_class }}"> CURRENT BALANCE: {{ fee_balance }} </p>
+        <p>
+            THIS SEMESTERS FEE:
+            <span class="text-info"> {{ fee }} </span>
+        </p>
+
+        <p>
+            YOU PAID:
+            <span class="text-info"> {{ paid }} </span>
+        </p>
+
+        <p>
+            PREVIOUS OVERPAYMENTS:
+            <span class="text-info"> {{ over_p }} </span>
+        </p>
+
+        <p class="{{ bal_class }}">
+            CURRENT BALANCE:
+            {{ fee_balance }}
+        </p>
     </div>
 
 
@@ -48,7 +63,7 @@
                     <td> {{ payment['transaction_date'] }} </td>
                     <td> {{ payment['transaction_channel'] }} </td>
                     <td> {{ payment['transaction_amount'] }} </td>
-                    <td> <!-- {{ payment['balance_after'] }} --> TODO </td>
+                    <td> {{ payment['balance_after'] }} </td>
                 </tr>
 
             {% endfor %}

@@ -5,5 +5,61 @@
 {% endblock %}
 
 {% block content %}
+    <div id="notifications-tab" class="tab tab-notifications">
+        <h4> NOTIFICATIONS </h4>
+
+        <form>
+            <span class="tab-content">
+                Receive important notification <span id="important_notify_info" class="glyphicon glyphicon-info-sign" ></span> <br>
+                Email: <input type="checkbox" name="important_notify_email" title="sms">
+                SMS: <input type="checkbox" name="important_notify_sms" title="sms"> <br>
+            </span>
+
+            <span class="tab-content">
+                Receive medium alerts <span class="glyphicon glyphicon-info-sign"></span> <br>
+                Email: <input type="checkbox" name="medium_notify_email" title="sms">
+                SMS: <input type="checkbox" name="medium_notify_sms" title="sms"> <br>
+            </span>
+
+            <span class="tab-content">
+                Receive minor alerts <span class="glyphicon glyphicon-info-sign"></span> <br>
+                Email: <input type="checkbox" name="minor_notify_email" title="sms">
+                SMS: <input type="checkbox" name="minor_notify_sms" title="sms"> <br>
+            </span>
+
+            <p><input type="submit" value="Submit" class="form-control btn btn-info"></p>
+        </form>
+    </div>
+
+    <div id="schemes-tab" class="tab tab-schemes">
+        <h4> COLOR SCHEMES </h4>
+
+        <form>
+            <select title="theme" name="theme" class="form-control">
+                <option selected disabled> SELECT A THEME </option>
+                <option value="dark"> Dark </option>
+                <option value="light"> Light </option>
+            </select> <br> <br>
+
+            <p><input type="submit" value="Submit" class="form-control btn btn-info"></p>
+        </form>
+    </div>
+
+    <div id="tfa" class="tab tab-tfa">
+        <h4> ENABLE 2FA </h4>
+
+        <form>
+            <select title="theme" name="theme" class="form-control">
+                <option selected disabled> ENABLE 2FA? </option>
+                <option value="yes"> Dark </option>
+                <option value="no"> Light </option>
+            </select> <br> <br>
+        </form>
+
+        <p><input type="submit" value="Submit" class="form-control btn btn-info"></p>
+    </div>
+
+    <div id="scheme-example" class="tab tab-scheme-example">
+    </div>
 
 {% endblock %}

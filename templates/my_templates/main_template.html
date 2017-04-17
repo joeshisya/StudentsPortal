@@ -8,62 +8,71 @@
         <link rel="shortcut icon" href="{{ url_for("static", filename="favicon.ico") }}">
     </head>
 
-    <body>
-        <nav class="navbar navbar-fixed-top">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                            data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+    <nav class="navbar navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target="#navbar" aria-expanded="false" aria-controls="navbar">
 
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
 
-                    <a class="navbar-brand" href="/">
-                        SCHOOL PORTAL
-                        <!-- <img src="{{ url_for('static', filename='images/main_logo.png') }}"> -->
-                    </a>
-                </div>
-
-                <div id="navbar" class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav navbar-right">
-                        {% if session.logged_in %}
-                            <li> <a href="{{ url_for("dashboard") }}"> <span class="glyphicon glyphicon-dashboard"></span> {{ session.registration_number }} </a> </li>
-                            <li> <a href="{{ url_for("inbox") }}"> <span class="glyphicon glyphicon-inbox"></span> INBOX </a> </li>
-                            <li> <a href="{{ url_for("settings") }}"> <span class="glyphicon glyphicon-cog"></span> SETTINGS </a> </li>
-                            <li> <a href="{{ url_for("logout") }}"> <span class="glyphicon glyphicon-log-out"></span> LOGOUT </a> </li>
-
-                        {% else %}
-                            <li> <a href="{{ url_for("login") }}"> <span class="glyphicon glyphicon-log-in"></span> LOGIN </a> </li>
-                            <li> <a href="{{ url_for("request_password_reset") }}">  <span class="glyphicon glyphicon-pencil"></span> RESET PASSWORD </a> </li>
-
-                        {% endif %}
-                    </ul>
-
-                    <form class="navbar-form navbar-right">
-                        <input type="text" class="form-control" placeholder="Search...">
-                    </form>
-                </div>
+                <a class="navbar-brand" href="/">
+                    SCHOOL PORTAL
+                    <!-- <img src="{{ url_for('static', filename='images/main_logo.png') }}"> -->
+                </a>
             </div>
-        </nav>
 
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    {% if session.logged_in %}
+                        <li> <a href="{{ url_for("dashboard") }}"> <span class="glyphicon glyphicon-dashboard"></span> {{ session.registration_number }} </a> </li>
+                        <li> <a href="{{ url_for("inbox") }}"> <span class="glyphicon glyphicon-inbox"></span> INBOX </a> </li>
+                        <li> <a href="{{ url_for("settings") }}"> <span class="glyphicon glyphicon-cog"></span> SETTINGS </a> </li>
+                        <li> <a href="{{ url_for("logout") }}"> <span class="glyphicon glyphicon-log-out"></span> LOGOUT </a> </li>
+
+                    {% else %}
+                        <li> <a href="{{ url_for("login") }}"> <span class="glyphicon glyphicon-log-in"></span> LOGIN </a> </li>
+                        <li> <a href="{{ url_for("request_password_reset") }}">  <span class="glyphicon glyphicon-pencil"></span> RESET PASSWORD </a> </li>
+
+                    {% endif %}
+                </ul>
+
+                <form class="navbar-form navbar-right">
+                    <input type="text" class="form-control" placeholder="Search..." >
+
+                    <button id="search" class="search-btn">
+                        <span class="glyphicon glyphicon-search"></span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    {% if not session['logged_in'] %}
+        <!-- Shows messages to the user -->
+        {% with messages = get_flashed_messages() %}
+            {%  if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-success alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+    {% endif %}
+
+    <body>
         <div class="container-fluid">
             <div class="row">
-                {% with messages = get_flashed_messages() %}
-                    {%  if messages %}
-                        {% for message in messages %}
-                            <div class="alert alert-success" role="alert">
-                                <button type="button" class="close" data-dismiss="alert" aria-label="close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-
-                                {{ message }}
-                            </div>
-                        {% endfor %}
-                    {% endif %}
-                {% endwith %}
 
                 {% block body %}
                 {% endblock %}

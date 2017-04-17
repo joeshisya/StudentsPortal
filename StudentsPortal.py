@@ -2,6 +2,7 @@ import binascii
 import collections
 import gc
 import logging
+import math
 import os
 from functools import wraps
 
@@ -203,7 +204,7 @@ def inbox():
 @app.route('/student/dashboard/settings')
 @login_required
 def settings():
-    return render_template("production/in_progress.html")
+    return render_template("dashboard/settings.html")
 
 
 @app.route('/student/logout/')
@@ -270,7 +271,7 @@ def accommodation():
         connection = DbConnect("university")
         connection.occupied_hostel(preferred_hostel)
 
-        connection = DbConnect("university")
+        connection = DbConnect("student")
         connection.assign_hostel(preferred_hostel, session['registration_number'])
 
         session['student_details']['hostel'] = preferred_hostel
@@ -373,12 +374,13 @@ def attendance():
 @login_required
 def fees():
     db = DbConnect("students")
-    history = db.get_fees(session['student_details'])
+    history = db.get_payment_history(session['student_details'])
+    statement = db.get_fee_statement(session['student_details'])
+    paid = history[-1]['transaction_amount']
+    over_p =  math.fabs(history[-2]['balance_after'])
 
-    year = [1, 2, 3, 4]
-    sem = [1, 2]
-
-    return render_template("dashboard/fees.html", payment_history=history)
+    return render_template("dashboard/fees.html", payment_history=history, fee=statement['total_amount'], over_p=over_p,
+                           paid=paid)
 
 
 @app.route('/student/dashboard/notes/<path:file>')
