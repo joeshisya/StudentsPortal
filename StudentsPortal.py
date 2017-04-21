@@ -76,10 +76,23 @@ def admin_only(f):
     return wrap
 
 
-def logged_in(reg_no):
+def get_student_details():
+    connection = DbConnect("students")
+    session['student_details'] = connection.get_student_details(session['registration_number'])
+
+
+def get_settings(registration_number):
+    db = DbConnect("students")
+    session['settings'] = db.get_settings(registration_number)
+
+
+def logged_in(registration_number):
     session['logged_in'] = True
-    session['registration_number'] = reg_no
-    session['admin'] = False
+    session['registration_number'] = registration_number
+
+    get_student_details()
+    get_settings(registration_number)
+
     flash("YOU HAVE SUCCESSFULLY LOGGED IN!!")
 
 
@@ -188,10 +201,6 @@ def reset_password(reset_code=None):
 @app.route('/student/dashboard/')
 @login_required
 def dashboard():
-    if 'student_details' not in session:
-        connection = DbConnect("students")
-        session['student_details'] = connection.get_student_details(session['registration_number'])
-
     return render_template("dashboard/dashboard.html")
 
 
@@ -201,10 +210,34 @@ def inbox():
     return render_template("production/in_progress.html")
 
 
-@app.route('/student/dashboard/settings')
+@app.route('/student/dashboard/settings', methods=["GET", "POST"])
 @login_required
 def settings():
-    return render_template("dashboard/settings.html")
+    if request.method == "POST":
+        section = request.form.get('section')
+
+        flash(session['settings'])
+
+        if section == "notifications":
+            session['settings']['medium_email'] = 1 if request.form.get('medium_notify_email') else 0
+            session['settings']['minor_email'] = 1 if request.form.get('minor_notify_email') else 0
+            session['settings']['minor_sms'] = 1 if request.form.get('minor_notify_sms') else 0
+
+        elif section == "themes":
+            theme = request.form.get('theme')
+            session['settings']['theme'] = theme
+
+        elif section == "tfa":
+            tfa = request.form.get('tfa')
+            session['settings']['tfa'] = tfa
+
+        db = DbConnect('students')
+        db.change_settings(session['registration_number'], session['settings'])
+
+        return render_template("dashboard/settings.html", settings=session['settings'])
+
+    else:
+        return render_template("dashboard/settings.html", settings=session['settings'])
 
 
 @app.route('/student/logout/')
@@ -364,12 +397,6 @@ def notes():
     return render_template("dashboard/notes.html", files=files)
 
 
-@app.route('/student/dashboard/attendance')
-@login_required
-def attendance():
-    return render_template("production/in_progress.html")
-
-
 @app.route('/student/dashboard/fees')
 @login_required
 def fees():
@@ -388,6 +415,16 @@ def fees():
 def download_file(file):
     file = os.path.join(os.path.dirname(__file__), file)
     return send_file(file)
+
+
+@app.route('/syudent/dashboard/library', methods=["GET", "POST"])
+@login_required
+def library():
+    if request.method == "POST":
+        pass
+
+    else:
+        return render_template('dashboard/library.html')
 
 
 @app.route('/admin/add_student/', methods=["GET", "POST"])

@@ -10,7 +10,7 @@ $('#toggle').click(function()
         {
             width: "toggle"
         },
-        750,
+        250,
         function(){/* Run after animation completes */}
     )
 });
@@ -18,6 +18,7 @@ $('#toggle').click(function()
 $('#search').click(function()
     {
         alert("Search Functionality To be Implemented");
+        return false;
     }
 );
 
@@ -25,28 +26,17 @@ $('#hostel-submit').click(function()
     {
         if(confirm("Click ok to continue"))
         {
-            $('form#BOOK').submit();
-        }
+            $('form#BOOK').submit();        }
         else
         {
-            return false;
+            $('form#BOOK').submit();
         }
     }
 );
 
-function over()
-{
-
-}
-
-function out()
-{
-
-}
-
-$('#important_notify_info').hover(function()
+$('#important_notify_info').click(function()
     {
-        alert("You have clicked");
+        alert("CLICKED")
     }
 );
 

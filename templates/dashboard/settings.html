@@ -5,61 +5,115 @@
 {% endblock %}
 
 {% block content %}
+    {% if settings %}
+        {% if settings['medium_email'] %}
+            {% set med_email = "checked='checked'" %}
+
+        {% else %}
+            {% set med_email = "" %}
+
+        {% endif %}
+
+        {% if settings['medium_sms'] %}
+            {% set med_sms = "checked='checked'" %}
+
+        {% else %}
+            {% set med_sms = "" %}
+
+        {% endif %}
+
+        {% if settings['minor_email'] %}
+            {% set min_email = "checked='checked'" %}
+
+        {% else %}
+            {% set min_email = "" %}
+
+        {% endif %}
+
+        {% if settings['minor_sms'] %}
+            {% set min_sms = "checked='checked'" %}
+
+        {% else %}
+            {% set min_sms = "" %}
+
+        {% endif %}
+
+        {% if settings['theme'] == "default" %}
+            {% set def_sel = "selected" %}
+            {% set dar_sel = "" %}
+            {% set lig_sel = "" %}
+
+        {% elif settings['theme'] == "dark" %}
+            {% set def_sel = "" %}
+            {% set dar_sel = "selected" %}
+            {% set lig_sel = "" %}
+
+        {% elif settings['theme'] == "light" %}
+            {% set def_sel = "" %}
+            {% set dar_sel = "" %}
+            {% set lig_sel = "selected" %}
+
+        {% endif %}
+
+        {% if settings['tfa'] %}
+            {% set tfa_text = "DISABLE " %}
+
+        {% else %}
+            {% set tfa_text = "ENABLE " %}
+
+        {% endif %}
+    {% endif %}
+
+
     <div id="notifications-tab" class="tab tab-notifications">
         <h4> NOTIFICATIONS </h4>
 
-        <form>
-            <span class="tab-content">
+        <span class="tab-content">
+            <form method="post" action="/student/dashboard/settings">
                 Receive important notification <span id="important_notify_info" class="glyphicon glyphicon-info-sign" ></span> <br>
-                Email: <input type="checkbox" name="important_notify_email" title="sms">
-                SMS: <input type="checkbox" name="important_notify_sms" title="sms"> <br>
-            </span>
+                Email: <input type="checkbox" name="important_notify_email" title="important_notify_email" checked="checked" disabled="disabled">
+                SMS: <input type="checkbox" name="important_notify_sms" title="important_notify_sms" checked="checked" disabled="disabled"> <br>
 
-            <span class="tab-content">
                 Receive medium alerts <span class="glyphicon glyphicon-info-sign"></span> <br>
-                Email: <input type="checkbox" name="medium_notify_email" title="sms">
-                SMS: <input type="checkbox" name="medium_notify_sms" title="sms"> <br>
-            </span>
+                Email: <input type="checkbox" name="medium_notify_email" title="sms" {{ med_email }}>
+                SMS: <input type="checkbox" name="medium_notify_sms" title="sms" checked="checked" disabled="disabled" {{ med_sms }}> <br>
 
-            <span class="tab-content">
+
                 Receive minor alerts <span class="glyphicon glyphicon-info-sign"></span> <br>
-                Email: <input type="checkbox" name="minor_notify_email" title="sms">
-                SMS: <input type="checkbox" name="minor_notify_sms" title="sms"> <br>
-            </span>
+                Email: <input type="checkbox" name="minor_notify_email" title="sms" {{ min_email }}>
+                SMS: <input type="checkbox" name="minor_notify_sms" title="sms" {{ min_sms }}> <br>
 
-            <p><input type="submit" value="Submit" class="form-control btn btn-info"></p>
-        </form>
+
+                <input type="hidden" name="section" value="notifications">
+                <p><input type="submit" value="Submit" class="form-control btn btn-info submit"></p>
+            </form>
+        </span>
     </div>
 
-    <div id="schemes-tab" class="tab tab-schemes">
+    <div id="themes-tab" class="tab tab-themes">
         <h4> COLOR SCHEMES </h4>
 
-        <form>
-            <select title="theme" name="theme" class="form-control">
-                <option selected disabled> SELECT A THEME </option>
-                <option value="dark"> Dark </option>
-                <option value="light"> Light </option>
-            </select> <br> <br>
+        <span>
+            <form method="post" action="/student/dashboard/settings">
+                <select title="theme" name="theme" class="form-control">
+                    <option value="default" {{ def_sel }}> Default </option>
+                    <option value="dark" {{ dar_sel }}> Dark </option>
+                    <option value="light" {{ lig_sel }}> Light </option>
+                </select> <br> <br>
 
-            <p><input type="submit" value="Submit" class="form-control btn btn-info"></p>
-        </form>
+                <input type="hidden" name="section" value="themes">
+                <input type="submit" value="Submit" class="form-control btn btn-info submit">
+            </form>
+        </span>
     </div>
 
     <div id="tfa" class="tab tab-tfa">
-        <h4> ENABLE 2FA </h4>
+        <h4> TWO FACTOR </h4>
 
-        <form>
-            <select title="theme" name="theme" class="form-control">
-                <option selected disabled> ENABLE 2FA? </option>
-                <option value="yes"> Dark </option>
-                <option value="no"> Light </option>
-            </select> <br> <br>
-        </form>
-
-        <p><input type="submit" value="Submit" class="form-control btn btn-info"></p>
+        <button type="button" class="btn btn-info form-control"> {{ tfa_text }} TWO FACTOR </button>
     </div>
 
-    <div id="scheme-example" class="tab tab-scheme-example">
+    <div id="theme-example" class="tab tab-theme-example">
     </div>
 
 {% endblock %}

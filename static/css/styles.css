@@ -5,10 +5,29 @@ html
 
 body
 {
+    margin: 0;
     min-height: 100%;
-    padding-left: 40px;
-    padding-right: 40px;
-    padding-bottom: 45px;
+    padding: 50px 0 0 0;
+}
+
+.main
+{
+    position: relative;
+    float: left;
+}
+
+.main .page-header
+{
+    margin-top: 0;
+}
+
+body
+{
+}
+
+.menu_button
+{
+    border: 1px solid #D3D3D3;
 }
 
 p
@@ -83,7 +102,7 @@ td
 
 .nav-side-menu .toggle-btn
 {
-    /* display: none; */
+    display: inline;
 }
 
 .nav-side-menu ul,
@@ -132,18 +151,6 @@ td
     background-color: #F0F0F0;
 }
 
-body
-{
-    margin: 0;
-    padding: 50px 0 0 0;
-}
-
-/* HERE */
-
-/*
- * Sidebar
- */
-
 /* Hide for mobile, show later */
 .sidebar
 {
@@ -167,16 +174,6 @@ body
 {
     color: #fff;
     background-color: #428bca;
-}
-
-.main
-{
-    position: relative;
-}
-
-.main .page-header
-{
-    margin-top: 0;
 }
 
 .small
@@ -225,10 +222,10 @@ body
 
 .tab
 {
-    display: inline-block;
+    display: block;
     position: relative;
     height: 250px;
-    min-width: 32%;
+    min-width: 333px;
     float: left;
     padding: 15px;
     margin: 5px 2px;
@@ -244,18 +241,18 @@ body
 
 .tab-content
 {
-    display: block;
+    display: inline-block;
     padding-bottom: 7px;
 }
 
-.tab .btn
+.tab .submit
 {
-    position: absolute;
+    position: relative;
     bottom: 0;
     right: 0;
 }
 
-.tab-schemes
+.tab-themes
 {
     border-left: 0;
 }
@@ -265,7 +262,7 @@ body
     border-left: 0;
 }
 
-.tab-scheme-example
+.tab-theme-example
 {
     height: 325px;
     width: 97%;
@@ -286,8 +283,8 @@ body
 {
   .sidebar
   {
-      position: fixed;
-      top: 51px;
+      position: relative;
+      float:left;
       bottom: 0;
       left: 0;
       z-index: 1000;
@@ -309,7 +306,7 @@ body
     #main
     {
         width:calc(100% - 300px);
-        float: right;
+        float: left;
     }
 }
 
@@ -324,9 +321,9 @@ body
 
     .nav-side-menu .toggle-btn
     {
-        display: block;
+        display: inline-block;
         cursor: pointer;
-        position: absolute;
+        position: relative;
         right: 10px;
         top: 10px;
         z-index: 10 !important;

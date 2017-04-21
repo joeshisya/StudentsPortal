@@ -265,8 +265,9 @@ class DbConnect(object):
 
     def get_fee_statement(self, student_details):
 
-        query = "SELECT * FROM fees WHERE year='{0}' AND semester='{1}'".format(student_details['current_year'],
-                    student_details['current_semester']
+        query = "SELECT * FROM fees WHERE year='{0}' AND semester='{1}'".format(
+            student_details['current_year'],
+            student_details['current_semester']
         )
         self.c.execute(query)
         statement = self.c.fetchone()
@@ -280,6 +281,34 @@ class DbConnect(object):
                 )""".format(o, t, th, f, fv)
         self.c.execute(query)
 
+    def get_student_list(self):
+        query = "SELECT registration_number FROM student_details"
+        self.c.execute(query)
+        results = self.c.fetchall()
+
+        return results
+
+    def get_settings(self, registration_number):
+        query = "SELECT * FROM settings WHERE registration_number='{0}'".format(registration_number)
+        self.c.execute(query)
+        result = self.c.fetchone()
+
+        self.close_db()
+
+        return result
+
+    def add_settings(self, registration_number):
+        query = "INSERT INTO settings (registration_number) VALUES('{0}' )".format(registration_number)
+        self.c.execute(query)
+
+    def change_settings(self, registration_number, settings):
+        query = """UPDATE settings SET medium_email='{0}', minor_email='{1}', minor_sms='{2}', theme='{3}', tfa='{4}' 
+                    WHERE registration_number='{5}'""".format(
+            settings['medium_email'], settings['minor_email'], settings['minor_sms'], settings['theme'],
+            settings['tfa'], registration_number
+        )
+        self.c.execute(query)
+        self.close_db()
 
     def close_db(self):
         """

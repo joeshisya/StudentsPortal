@@ -1,6 +1,23 @@
 {% extends "my_templates/main_template.html" %}
 
 {% block body %}
+    <div>
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+
+            <span class="sr-only navbar-inverse">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+    </div>
+
+    <div id="toggle" >
+        <button>
+            <span class="glyphicon glyphicon-adjust"> </span>
+        </button>
+    </div>
+
     <div id="sidebar" class="sidebar nav-side-menu">
         <div class="brand">
             <a href="{{ url_for("dashboard") }}">
@@ -15,12 +32,6 @@
                 {% endif %}
 
             </a>
-        </div>
-
-        <div id="toggle" >
-            <button>
-                <span class="glyphicon glyphicon-arrow-left"> </span>
-            </button>
         </div>
 
         <div class="menu-list" id="menu-list">
@@ -52,6 +63,10 @@
 
                 <li>
                     <a href="{{ url_for("fees") }}"> FEES </a>
+                </li>
+
+                <li>
+                    <a href="{{ url_for("library") }}"> LIBRARY </a>
                 </li>
             </ul>
         </div>
