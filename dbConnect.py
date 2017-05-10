@@ -310,6 +310,24 @@ class DbConnect(object):
         self.c.execute(query)
         self.close_db()
 
+    def get_book_list(self):
+        pass
+
+    def get_borrowed_books(self, registration_number):
+        query = "SELECT * FROM  borrowed_books WHERE registration_number='{0}'".format(registration_number)
+        self.c.execute(query)
+        results = self.c.fetchall()
+
+        return results
+
+    def get_warnings(self, registration_number):
+        query = "SELECT * FROM warnings WHERE registration_number='{0}'".format(registration_number)
+        self.c.execute(query)
+        results = self.c.fetchall()
+        self.close_db()
+
+        return results
+
     def close_db(self):
         """
         Close the database

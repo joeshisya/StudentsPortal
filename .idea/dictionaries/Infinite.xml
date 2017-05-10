@@ -3,6 +3,7 @@
     <words>
       <w>beazley</w>
       <w>borderless</w>
+      <w>dbff</w>
       <w>dropdown</w>
       <w>getbootstrap</w>
       <w>github</w>
@@ -16,6 +17,7 @@
       <w>smtp</w>
       <w>tablist</w>
       <w>tabpanel</w>
+      <w>twilio</w>
     </words>
   </dictionary>
 </component>

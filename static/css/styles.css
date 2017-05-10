@@ -46,6 +46,11 @@ td
     min-width: 150px;
 }
 
+.narrow
+{
+    min-width: 0;
+}
+
 .table-label
 {
     text-transform: uppercase;
@@ -62,6 +67,8 @@ td
     width: 150px;
     padding: 15px;
     margin: 15px 0 15px 0;
+    border: 1px solid #BBBBBB;
+    background: white;
 }
 
 .collapse.in
@@ -100,9 +107,10 @@ td
     display: block;
 }
 
-.nav-side-menu .toggle-btn
+.toggle-btn
 {
     display: inline;
+    float: left;
 }
 
 .nav-side-menu ul,
@@ -268,6 +276,12 @@ td
     width: 97%;
     background: #F0F8FF;
     margin-top: 0;
+}
+
+.center-div
+{
+    width: 50%;
+    margin: 35px;
 }
 
 @media (min-width: 768px)

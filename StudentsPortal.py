@@ -9,9 +9,9 @@ from functools import wraps
 from flask import Flask, render_template, redirect, url_for, request, flash, session, send_file
 from flask_mail import Mail
 
-import MyMail
-import gmailSettings
+import messaging
 from dbConnect import DbConnect
+from private import settings
 
 app = Flask(__name__)
 app.secret_key = "THOU_SHALT_NOT_KNOW_THINE_SECRET_KEY"
@@ -23,11 +23,11 @@ app.config.update(
 app.config.update(
     DEBUG=True,
     # EMAIL SETTINGS
-    MAIL_SERVER=gmailSettings.mail_server,
-    MAIL_PORT=gmailSettings.mail_port,
-    MAIL_USE_SSL=gmailSettings.mail_use_ssl,
-    MAIL_USERNAME=gmailSettings.mail_username,
-    MAIL_PASSWORD=gmailSettings.mail_password
+    MAIL_SERVER=settings.mail_server,
+    MAIL_PORT=settings.mail_port,
+    MAIL_USE_SSL=settings.mail_use_ssl,
+    MAIL_USERNAME=settings.mail_username,
+    MAIL_PASSWORD=settings.mail_password
 )
 mail = Mail(app)
 
@@ -138,6 +138,7 @@ def request_password_reset():
         if connection.user_exists(attempted_registration_number):
             reset_code = binascii.hexlify(os.urandom(24)).decode('ascii')
 
+            subject = "Password reset request"
             message = """ You are receiving this email because someone has requested for password reset for your 
             account. Click on the link below to reset your password. If you cannot click the link, copy and  paste it 
             into your browser \n\n 
@@ -148,7 +149,7 @@ def request_password_reset():
 
             """.format(reset_code)
 
-            if MyMail.send_mail(mail, message):
+            if messaging.send_email(mail, subject, message):
                 connection = DbConnect("students")
                 connection.add_password_reset_code(reset_code, attempted_registration_number)
                 flash('Please Check Your Email')
@@ -404,7 +405,7 @@ def fees():
     history = db.get_payment_history(session['student_details'])
     statement = db.get_fee_statement(session['student_details'])
     paid = history[-1]['transaction_amount']
-    over_p =  math.fabs(history[-2]['balance_after'])
+    over_p = math.fabs(history[-2]['balance_after'])
 
     return render_template("dashboard/fees.html", payment_history=history, fee=statement['total_amount'], over_p=over_p,
                            paid=paid)
@@ -417,14 +418,45 @@ def download_file(file):
     return send_file(file)
 
 
-@app.route('/syudent/dashboard/library', methods=["GET", "POST"])
+@app.route('/student/dashboard/library', methods=["GET", "POST"])
 @login_required
 def library():
     if request.method == "POST":
         pass
 
     else:
-        return render_template('dashboard/library.html')
+        db = DbConnect('students')
+        borrowed = db.get_borrowed_books(session['registration_number'])
+        warnings = db.get_warnings(session['registration_number'])
+
+        return render_template('dashboard/library.html', borrowed=borrowed, warnings=warnings)
+
+
+@app.route('/admin/feature_test/', methods=["GET", "POST"])
+@login_required
+def feature_test():
+    if request.method == "POST":
+        message_client = request.form.get('message_client')
+        mail_subject = "THis is a test message"
+        message_body = request.form.get('message_body')
+        feedback_message = ""
+
+        if message_client == "email":
+            if messaging.send_email(mail, mail_subject, message_body):
+                feedback_message = "Email successfully sent"
+            else:
+                feedback_message = "Email not sent"
+
+        elif message_client == "sms":
+            if messaging.send_sms(message_body):
+                feedback_message = "SMS sent successfully"
+            else:
+                feedback_message = "SMS not sent"
+
+        return render_template("admin/feature_test.html", message=feedback_message)
+
+    else:
+        return render_template("admin/feature_test.html", message=None)
 
 
 @app.route('/admin/add_student/', methods=["GET", "POST"])
