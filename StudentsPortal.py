@@ -398,6 +398,13 @@ def notes():
     return render_template("dashboard/notes.html", files=files)
 
 
+@app.route('/student/dashboard/notes/<path:file>')
+@login_required
+def download_file(file):
+    file = os.path.join(os.path.dirname(__file__), file)
+    return send_file(file)
+
+
 @app.route('/student/dashboard/fees')
 @login_required
 def fees():
@@ -409,13 +416,6 @@ def fees():
 
     return render_template("dashboard/fees.html", payment_history=history, fee=statement['total_amount'], over_p=over_p,
                            paid=paid)
-
-
-@app.route('/student/dashboard/notes/<path:file>')
-@login_required
-def download_file(file):
-    file = os.path.join(os.path.dirname(__file__), file)
-    return send_file(file)
 
 
 @app.route('/student/dashboard/library', methods=["GET", "POST"])
@@ -432,31 +432,17 @@ def library():
         return render_template('dashboard/library.html', borrowed=borrowed, warnings=warnings)
 
 
-@app.route('/admin/feature_test/', methods=["GET", "POST"])
+@app.route('/student/dashboard/exam_card')
 @login_required
-def feature_test():
-    if request.method == "POST":
-        message_client = request.form.get('message_client')
-        mail_subject = "THis is a test message"
-        message_body = request.form.get('message_body')
-        feedback_message = ""
-
-        if message_client == "email":
-            if messaging.send_email(mail, mail_subject, message_body):
-                feedback_message = "Email successfully sent"
-            else:
-                feedback_message = "Email not sent"
-
-        elif message_client == "sms":
-            if messaging.send_sms(message_body):
-                feedback_message = "SMS sent successfully"
-            else:
-                feedback_message = "SMS not sent"
-
-        return render_template("admin/feature_test.html", message=feedback_message)
+def exam_card():
+    fee_balance = float(session['student_details']['fee_balance'])
+    if fee_balance <= 0:
+        pass
 
     else:
-        return render_template("admin/feature_test.html", message=None)
+        pass
+
+    return render_template('dashboard/exam_card.html')
 
 
 @app.route('/admin/add_student/', methods=["GET", "POST"])

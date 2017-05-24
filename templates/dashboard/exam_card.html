@@ -1,0 +1,20 @@
+{% extends "my_templates/account_template.html" %}
+
+{% block title %}
+    EXAM CARD
+{% endblock %}
+
+{% block content %}
+    <div class="text-center">
+        {% if session['student_details']['fee_balance'] < 0 %}
+
+            <p> Here is your exam card </p>
+            <p> <a href="#"> Print </a> </p>
+
+        {% else %}
+            <p> You have not completed your fee! </p>
+            <p> Please complete you fee payment before you can access this page </p>
+
+        {% endif %}
+    </div>
+{% endblock %}
